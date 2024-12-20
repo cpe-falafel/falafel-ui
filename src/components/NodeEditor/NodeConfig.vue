@@ -1,0 +1,1 @@
+// Panneau de configuration du noeud sélectionné

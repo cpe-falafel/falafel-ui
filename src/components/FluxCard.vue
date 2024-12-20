@@ -1,0 +1,1 @@
+// Représentation visuelle d’un flux dans le hub

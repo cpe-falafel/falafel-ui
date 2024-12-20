@@ -1,0 +1,1 @@
+// Représentation visuelle d’un worker dans le hub
