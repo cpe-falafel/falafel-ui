@@ -51,8 +51,8 @@ const nodeTypes = {
 const emit = defineEmits(['nodeSelected', 'graphUpdated'])
 
 // Quand un nœud est double-cliqué, on peut considérer que c’est un “sélection”
-function onNodeDoubleClick(_evt, node) {
-    emit('nodeSelected', node)
+function onNodeDoubleClick(_evt) { 
+    emit('nodeSelected', _evt.node)
 }
 
 // Quand on sélectionne un/des nœuds

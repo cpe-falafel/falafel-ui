@@ -55,8 +55,8 @@ function createNode() {
 
 <style scoped>
 .node-add-form {
-    background: #fff;
-    border: 1px solid #ddd;
+    margin: 0 auto;
+    max-width: 50vw;
     padding: 1rem;
     border-radius: 6px;
 }

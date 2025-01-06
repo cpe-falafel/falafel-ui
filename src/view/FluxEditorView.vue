@@ -101,7 +101,7 @@ h1 {
   color: #242424;
   background-color: #f7f7f7;
   border: 1px solid #ddd;
-  min-width: 30vw;
+  min-width: 40vw;
 }
 
 .editor-layout__canvas {
@@ -114,10 +114,13 @@ h1 {
 .editor-layout__sidebar {
   flex: 2;
   color: #242424;
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  min-width: 60vw;
+  min-width: 50vw;
+  min-height: 40vh;
 }
 
 .editor-actions {
