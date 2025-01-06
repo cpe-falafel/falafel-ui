@@ -1,60 +1,128 @@
 <template>
-    <div class="flux-editor-view">
-      <h1>Édition de Flux</h1>
-      <div class="flux-editor-container">
-        <!-- Cette div contiendra le graphe -->
-        <VueFlow
-          v-model:nodes="nodes"
-          v-model:edges="edges"
-          class="flow-container"
-          :fit-view="true"
-        />
-      </div>
-      <button @click="saveFluxConfig">Enregistrer la configuration</button>
-      <button @click="pushToWorker">Pousser vers le worker</button>
+  <div class="flux-editor-view">
+    <h1>Édition de Flux</h1>
+
+    <div class="editor-layout">
+      <section class="editor-layout__preview">
+        <!-- Aperçu du flux rendu -->
+        <PreviewEditor />
+        <div class="editor-actions">
+          <button @click="saveFluxConfig">Enregistrer</button>
+          <button @click="pushFluxConfig">Pousser vers le worker</button>
+        </div>
+      </section>
+
+      <!-- Partie droite : Config du nœud sélectionné et Preview -->
+      <section class="editor-layout__sidebar">
+        <!-- Config du nœud sélectionné -->
+        <NodeConfig v-if="selectedNode" :node="selectedNode" @updateNode="updateNodeData" />
+        <!-- Sinon, on affiche la possibilité d’ajouter un nœud -->
+        <NodeAddForm v-else @addNode="addNode" />
+      </section>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue'
-  import { VueFlow } from '@vue-flow/core' // Assure-toi du chemin correct selon ta config
-  // import { saveFluxConfigAPI } from '@/api/fluxService' par exemple
-  
-  const nodes = ref([
-    { id: '1', position: { x: 0, y: 0 }, data: { label: 'Media In' }, type: 'input' },
-    { id: '2', position: { x: 200, y: 0 }, data: { label: 'Effet X' }},
-    { id: '3', position: { x: 400, y: 0 }, data: { label: 'Media Out' }, type: 'output' }
-  ])
-  
-  const edges = ref([
-    { id: 'e1-2', source: '1', target: '2' },
-    { id: 'e2-3', source: '2', target: '3' }
-  ])
-  
-  function saveFluxConfig() {
-    // Logique pour appeler l’API et sauvegarder la config
-    console.log('Sauvegarde de la config')
-  }
-  
-  function pushToWorker() {
-    // Logique pour pousser la config vers le worker
-    console.log('Envoi de la config au worker')
-  }
-  </script>
-  
-  <style scoped>
-  .flux-editor-view {
-    padding: 1rem;
-  }
-  .flux-editor-container {
-    width: 100%;
-    height: 500px;
-    background: #f0f0f0;
-    margin-bottom: 1rem;
-  }
-  .flow-container {
-    width: 100%;
-    height: 100%;
-  }
-  </style>
-  
+    <div class="editor-layout">
+      <!-- Partie basse : Graphe de nœuds -->
+      <section class="editor-layout__canvas">
+        <NodeCanvas @nodeSelected="handleNodeSelected" @graphUpdated="handleGraphUpdated" @addNode="handleAddNodeFromCanvas" />
+      </section>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import NodeCanvas from '@/components/NodeEditor/NodeCanvas.vue'
+import NodeConfig from '@/components/NodeEditor/NodeConfig.vue'
+import PreviewEditor from '@/components/NodeEditor/PreviewEditor.vue'
+import NodeAddForm from '@/components/NodeEditor/NodeAddForm.vue'
+// import { saveFluxConfigAPI } from '@/api/fluxService' par exemple
+
+// On garde en mémoire le nœud sélectionné
+const selectedNode = ref(null)
+
+// Exemples de méthodes pour gérer les events
+function handleNodeSelected(node) {
+  selectedNode.value = node
+}
+
+function handleGraphUpdated(graphData) {
+  console.log('Graph updated:', graphData)
+}
+
+function handleAddNodeFromCanvas(newNode) {
+  console.log('Nœud ajouté depuis Canvas (si implémenté) :', newNode)
+  // Ici tu peux gérer la mise à jour de ta liste de nœuds globale
+}
+
+function updateNodeData(updatedNode) {
+  // Logique pour modifier le nœud dans le store ou le state global
+  console.log('Mettre à jour le nœud sélectionné avec', updatedNode)
+  selectedNode.value = updatedNode
+}
+
+function addNode(newNode) {
+  // Logique pour ajouter réellement le nœud dans le graphe
+  // Par exemple, le passer à NodeCanvas via un store, ou un event global
+  console.log('Nœud à ajouter :', newNode)
+}
+
+function saveFluxConfig() {
+  // Appel API pour sauvegarder
+  alert('Configuration du flux sauvegardée !')
+}
+
+function pushFluxConfig() {
+  // Appel pour pousser la config au worker
+  alert('Configuration du flux envoyée au worker !')
+}
+</script>
+
+<style scoped>
+h1 {
+  font-size: 2em;
+}
+
+.flux-editor-view {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Mise en page de la zone d’édition */
+.editor-layout {
+  display: flex;
+  gap: 1rem;
+  min-height: 33vh;
+}
+
+.editor-layout__preview {
+  flex: 1;
+  color: #242424;
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  min-width: 30vw;
+}
+
+.editor-layout__canvas {
+  flex: 1;
+  color: #242424;
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+}
+
+.editor-layout__sidebar {
+  flex: 2;
+  color: #242424;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 60vw;
+}
+
+.editor-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+</style>
