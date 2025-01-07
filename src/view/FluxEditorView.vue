@@ -5,11 +5,9 @@
     <div class="editor-layout">
       <section class="editor-layout__preview">
         <!-- Aperçu du flux rendu -->
-        <PreviewEditor />
-        <div class="editor-actions">
-          <button @click="saveFluxConfig">Enregistrer</button>
-          <button @click="pushFluxConfig">Pousser vers le worker</button>
-        </div>
+        <PreviewEditor class="preview"/>
+
+        <WorkerGrid class="workergrid"/>
       </section>
 
       <!-- Partie droite : Config du nœud sélectionné et Preview -->
@@ -35,6 +33,7 @@ import NodeCanvas from '@/components/NodeEditor/NodeCanvas.vue'
 import NodeConfig from '@/components/NodeEditor/NodeConfig.vue'
 import PreviewEditor from '@/components/NodeEditor/PreviewEditor.vue'
 import NodeAddForm from '@/components/NodeEditor/NodeAddForm.vue'
+import WorkerGrid from '@/components/WorkerGrid.vue';
 import { useNodeStore } from '@/store/useNodeStore'
 // import { saveFluxConfigAPI } from '@/api/fluxService' par exemple
 
@@ -76,12 +75,14 @@ function pushFluxConfig() {
   // Appel pour pousser la config au worker
   alert('Configuration du flux envoyée au worker !')
 }
+
 </script>
 
 <style scoped>
 h1 {
   font-size: 2em;
 }
+
 
 .flux-editor-view {
   padding: 1rem;
@@ -97,11 +98,20 @@ h1 {
   min-height: 33vh;
 }
 
+.preview{
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+}
+
+.workergrid{
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  margin-top : 1rem;
+}
+
 .editor-layout__preview {
   flex: 1;
   color: #242424;
-  background-color: #f7f7f7;
-  border: 1px solid #ddd;
   min-width: 40vw;
 }
 
