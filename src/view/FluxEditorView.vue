@@ -15,7 +15,7 @@
       <!-- Partie droite : Config du nœud sélectionné et Preview -->
       <section class="editor-layout__sidebar">
         <!-- Config du nœud sélectionné -->
-        <NodeConfig v-if="selectedNode" :node="selectedNode" @updateNode="updateNodeData" />
+        <NodeConfig v-if="nodeStore.selectedNode" :node="nodeStore.selectedNode" @updateNode="updateNodeData" />
         <!-- Sinon, on affiche la possibilité d’ajouter un nœud -->
         <NodeAddForm v-else @addNode="addNode" />
       </section>
@@ -30,14 +30,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue' // bite
 import NodeCanvas from '@/components/NodeEditor/NodeCanvas.vue'
 import NodeConfig from '@/components/NodeEditor/NodeConfig.vue'
 import PreviewEditor from '@/components/NodeEditor/PreviewEditor.vue'
 import NodeAddForm from '@/components/NodeEditor/NodeAddForm.vue'
+import { useNodeStore } from '@/store/useNodeStore'
 // import { saveFluxConfigAPI } from '@/api/fluxService' par exemple
 
-// On garde en mémoire le nœud sélectionné
+const nodeStore = useNodeStore()
 const selectedNode = ref(null)
 
 // Exemples de méthodes pour gérer les events

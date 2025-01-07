@@ -1,1 +1,0 @@
-// Point d’entrée du store (Pinia par exemple)

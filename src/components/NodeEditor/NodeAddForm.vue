@@ -20,9 +20,10 @@
 
 <script setup>
 import { ref } from 'vue'
-const emit = defineEmits(['addNode'])
+import { useNodeStore } from '@/store/useNodeStore'
 
-// Champs de formulaire
+const nodeStore = useNodeStore()
+
 const label = ref('')
 const type = ref('custom-node')
 const posX = ref(100)
@@ -43,7 +44,7 @@ function createNode() {
         position: { x: posX.value, y: posY.value },
         data: { label: label.value }
     }
-    emit('addNode', newNode)
+    nodeStore.addNode(newNode)
 
     // Optionnel : on peut reset le formulaire
     label.value = ''

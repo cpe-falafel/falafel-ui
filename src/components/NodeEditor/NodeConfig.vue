@@ -16,6 +16,9 @@
 
 <script setup>
 import { reactive, watchEffect } from 'vue'
+import { useNodeStore } from '@/store/useNodeStore'
+
+const nodeStore = useNodeStore()
 
 const props = defineProps({
     node: {
@@ -23,7 +26,6 @@ const props = defineProps({
         required: true
     }
 })
-const emit = defineEmits(['updateNode'])
 
 // On copie les données du nœud dans un objet local pour manipuler le form
 const nodeData = reactive({
@@ -42,7 +44,7 @@ function saveNode() {
             param: nodeData.param
         }
     }
-    emit('updateNode', updatedNode)
+    nodeStore.updateNodeData(updatedNode)
 }
 
 // Optionnel : si props.node change, on resynchronise le form
@@ -56,8 +58,6 @@ watchEffect(() => {
 
 <style scoped>
 .node-config {
-    background: #fff;
-    border: 1px solid #ddd;
     padding: 1rem;
     border-radius: 6px;
 }
