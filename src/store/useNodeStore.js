@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { markRaw } from "vue";
+import { MarkerType } from "@vue-flow/core";
 import NodeItem from "@/components/FluxEditor/FluxEditorNodeItem.vue";
 
 export const useNodeStore = defineStore("flow", {
@@ -7,26 +8,38 @@ export const useNodeStore = defineStore("flow", {
     nodes: [
       {
         id: "1",
-        type: "custom-node",
+        type: "customInput",
         position: { x: 50, y: 50 },
         data: { label: "Source", foo: "bar" },
       },
       {
         id: "2",
-        type: "custom-node",
-        position: { x: 300, y: 50 },
-        data: { label: "Effet", param: 123, type: "custom" },
-      },
-      {
-        id: "3",
-        type: "custom-node",
+        type: "customOutput",
         position: { x: 550, y: 50 },
         data: { label: "Output" },
       },
+      {
+        id: "3",
+        type: "customFilter",
+        position: { x: 300, y: 50 },
+        data: { label: "Effet", param: 123, type: "custom" },
+      },
     ],
     edges: [
-      { id: "e1-2", source: "1", target: "2" },
-      { id: "e2-3", source: "2", target: "3" },
+      {
+        id: "e1-3",
+        source: "1",
+        target: "3",
+        markerEnd: MarkerType.ArrowClosed,
+        animated: true,
+      },
+      {
+        id: "e3-2",
+        source: "3",
+        target: "2",
+        markerEnd: MarkerType.ArrowClosed,
+        animated: true,
+      },
     ],
 
     nodeTypes: {

@@ -8,9 +8,11 @@
             Paramètre: {{ data.param || '—' }}
         </div>
     </div>
+    <Handle id="a" type="source" :position="Position.Right" />
 </template>
 
 <script setup>
+import { Handle, Position, useVueFlow } from '@vue-flow/core'
 // Vue Flow passe les props "data" et autres (id, type, etc.) au composant custom.
 // data contient les propriétés qu’on a placées dans nodes[].data
 const props = defineProps({

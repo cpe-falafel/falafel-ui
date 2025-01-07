@@ -1,18 +1,39 @@
 <template>
     <div class="node-canvas">
-        <VueFlow class="flow-container" v-model:nodes="nodes" v-model:edges="edges" :node-types="nodeStore.nodeTypes"
-            :fit-view="true" @nodeDoubleClick="onNodeDoubleClick" @nodesSelected="onNodesSelected"
-            @update="onUpdateGraph" />
+        <VueFlow class="flow-container interaction-flow" v-model:nodes="nodes" v-model:edges="edges"
+            :node-types="nodeStore.nodeTypes" :fit-view="true" @nodeDoubleClick="onNodeDoubleClick"
+            @nodesSelected="onNodesSelected" @update="onUpdateGraph">
+
+            <template #node-customInput="props">
+                <CustomInputNode :id="props.id" />
+            </template>
+
+            <template #node-customFilter="props">
+                <CustomFilterNode :id="props.id" :data="props.data" />
+            </template>
+
+            <template #node-customOutput="props">
+                <CustomOutputNode :id="props.id" />
+            </template>
+
+            <Background />
+        </VueFlow>
     </div>
 </template>
 
 <script setup>
-import { computed, markRaw } from 'vue'
-import { VueFlow } from '@vue-flow/core'
+import { computed } from 'vue'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background } from '@vue-flow/background'
 import { useNodeStore } from '@/store/useNodeStore'
+import CustomInputNode from '@/components/FluxEditor/CustomInputNode.vue'
+import CustomOutputNode from '@/components/FluxEditor/CustomOutputNode.vue'
+import CustomFilterNode from '@/components/FluxEditor/CustomFilterNode.vue'
 import '@vue-flow/core/dist/style.css'
+import '@/assets/styles/node.css'
 
 const nodeStore = useNodeStore()
+const { onConnect, addEdges } = useVueFlow();
 
 function onNodeDoubleClick(_evt, node) {
     nodeStore.setSelectedNode(node)
@@ -27,6 +48,10 @@ function onNodesSelected(nodesSelected) {
 function onUpdateGraph() {
     nodeStore.updateGraph(nodeStore.nodes, nodeStore.edges)
 }
+
+onConnect((connection) => {
+    addEdges(connection)
+})
 
 const nodes = computed({
     get() {
