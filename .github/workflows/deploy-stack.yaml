@@ -13,6 +13,6 @@ jobs:
       - name: Trigger deploy in repo-a
         uses: peter-evans/repository-dispatch@v2
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.STACK_PAT }}
           repository: 'cpe-falafel/falafel-stack'
           event-type: deploy_ui
