@@ -1,4 +1,4 @@
-// Représentation visuelle d’un noeud<template>
+<template>
     <div class="node-item">
         <div class="node-item__header">
             {{ data.label }}

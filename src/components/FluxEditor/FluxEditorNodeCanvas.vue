@@ -1,6 +1,5 @@
 <template>
     <div class="node-canvas">
-        <!-- Le composant VueFlow -->
         <VueFlow class="flow-container" v-model:nodes="nodes" v-model:edges="edges" :node-types="nodeStore.nodeTypes"
             :fit-view="true" @nodeDoubleClick="onNodeDoubleClick" @nodesSelected="onNodesSelected"
             @update="onUpdateGraph" />
@@ -12,7 +11,6 @@ import { computed, markRaw } from 'vue'
 import { VueFlow } from '@vue-flow/core'
 import { useNodeStore } from '@/store/useNodeStore'
 import '@vue-flow/core/dist/style.css'
-import NodeItem from '@/components/NodeEditor/NodeItem.vue'
 
 const nodeStore = useNodeStore()
 

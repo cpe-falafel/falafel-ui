@@ -4,24 +4,24 @@
 
     <div class="editor-layout">
       <section class="editor-layout__preview">
-        <!-- Aperçu du flux rendu -->
-        <PreviewEditor />
+        <!-- Partie Gauche : Aperçu du flux rendu / Gestion des workers -->
+        <FluxPreview />
         <div class="editor-actions">
           <button @click="saveFluxConfig">Enregistrer</button>
           <button @click="pushFluxConfig">Pousser vers le worker</button>
         </div>
       </section>
 
-      <!-- Partie droite : Config du nœud sélectionné et Preview -->
+      <!-- Partie droite : Config du noeud sélectionné / Ajout de nouveau noeud -->
       <section class="editor-layout__sidebar">
-        <!-- Config du nœud sélectionné -->
-        <NodeConfig v-if="nodeStore.selectedNode" :node="nodeStore.selectedNode" @updateNode="updateNodeData" />
-        <!-- Sinon, on affiche la possibilité d’ajouter un nœud -->
+        <!-- Config du noeud sélectionné -->
+        <NodeEditForm v-if="nodeStore.selectedNode" :node="nodeStore.selectedNode" @updateNode="updateNodeData" />
+        <!-- Sinon, on affiche la possibilité d’ajouter un noeud -->
         <NodeAddForm v-else @addNode="addNode" />
       </section>
     </div>
     <div class="editor-layout">
-      <!-- Partie basse : Graphe de nœuds -->
+      <!-- Partie basse : Graphe de noeuds -->
       <section class="editor-layout__canvas">
         <NodeCanvas @nodeSelected="handleNodeSelected" @graphUpdated="handleGraphUpdated" @addNode="handleAddNodeFromCanvas" />
       </section>
@@ -30,18 +30,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue' // bite
-import NodeCanvas from '@/components/NodeEditor/NodeCanvas.vue'
-import NodeConfig from '@/components/NodeEditor/NodeConfig.vue'
-import PreviewEditor from '@/components/NodeEditor/PreviewEditor.vue'
-import NodeAddForm from '@/components/NodeEditor/NodeAddForm.vue'
+import { ref } from 'vue'
+import NodeCanvas from '@/components/FluxEditor/FluxEditorNodeCanvas.vue'
+import NodeEditForm from '@/components/FluxEditor/FluxEditorNodeEditForm.vue'
+import FluxPreview from '@/components/FluxEditor/FluxEditorPreview.vue'
+import NodeAddForm from '@/components/FluxEditor/FluxEditorNodeAddForm.vue'
 import { useNodeStore } from '@/store/useNodeStore'
 // import { saveFluxConfigAPI } from '@/api/fluxService' par exemple
 
 const nodeStore = useNodeStore()
 const selectedNode = ref(null)
 
-// Exemples de méthodes pour gérer les events
 function handleNodeSelected(node) {
   selectedNode.value = node
 }
@@ -51,29 +50,25 @@ function handleGraphUpdated(graphData) {
 }
 
 function handleAddNodeFromCanvas(newNode) {
-  console.log('Nœud ajouté depuis Canvas (si implémenté) :', newNode)
-  // Ici tu peux gérer la mise à jour de ta liste de nœuds globale
+  console.log('Noeud ajouté depuis Canvas (si implémenté) :', newNode)
+  // Gérer la mise à jour de la liste de noeuds globale
 }
 
 function updateNodeData(updatedNode) {
-  // Logique pour modifier le nœud dans le store ou le state global
   console.log('Mettre à jour le nœud sélectionné avec', updatedNode)
   selectedNode.value = updatedNode
 }
 
 function addNode(newNode) {
-  // Logique pour ajouter réellement le nœud dans le graphe
-  // Par exemple, le passer à NodeCanvas via un store, ou un event global
+  // Logique pour ajouter réellement le noeud dans le graphe
   console.log('Nœud à ajouter :', newNode)
 }
 
 function saveFluxConfig() {
-  // Appel API pour sauvegarder
   alert('Configuration du flux sauvegardée !')
 }
 
 function pushFluxConfig() {
-  // Appel pour pousser la config au worker
   alert('Configuration du flux envoyée au worker !')
 }
 </script>

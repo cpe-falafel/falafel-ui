@@ -37,7 +37,6 @@ let typeList = [
 ]
 
 function createNode() {
-    // On émet l’événement addNode vers le parent
     const newNode = {
         id: Date.now().toString(),
         type: type.value,
@@ -46,7 +45,6 @@ function createNode() {
     }
     nodeStore.addNode(newNode)
 
-    // Optionnel : on peut reset le formulaire
     label.value = ''
     type.value = 'custom-node'
     posX.value = 100
