@@ -1,86 +1,87 @@
 <template>
   <div class="hub-view">
-    <h1>Welcome back, Ralph!</h1>
     <section>
-      <h2>
-        Mes flux
-        <span class="material-symbols-outlined">
+      <div class="div-title">
+        <h3>My Flux</h3>
+        <span class="material-symbols-outlined material-vertical-middle">
           arrow_forward
         </span>
-      </h2>
-      <button @click="createFlux">Créer un nouveau flux</button>
-      <div class="list">
-        <FluxCard v-for="flux in fluxList" :key="flux.id" :flux="flux" 
-          @edit="editFlux" @start="startFlux" @stop="stopFlux"
-        />
+      </div>
+      <div class="workergrid">
+          <FluxCardContainer />
       </div>
     </section>
 
     <section>
-      <h2>
-        Mes workers
-        <span class="material-symbols-outlined">
+      <div class="div-title">
+        <h3>My workers</h3>
+        <span class="material-symbols-outlined material-vertical-middle">
           arrow_forward
         </span>
-      </h2>
-      <div class="list">
-        <WorkerCard v-for="worker in workerList" :key="worker.id" :worker="worker" 
-          @edit="editWorker" @start="startWorker" @stop="stopWorker"
-        />
       </div>
+      <div class="workergrid">
+          <WorkerGrid :isFluxEdition="false"/>
+        </div>
     </section>
   </div>
 </template>
 
-<script setup>
-import FluxCard from '@/components/FluxCard.vue'
-import WorkerCard from '@/components/WorkerCard.vue'
-// On peut import une méthode du service API
-// import { getFluxList, getWorkerList } from '@/api/fluxService'
+<script>
+import { useWorkersStore } from "@/store/workerStore";
+import { useFluxStore } from "@/store/fluxStore";
+import { computed } from "vue";
+import WorkerGrid from '../components/worker/WorkerGrid.vue';
+import FluxCardContainer from "../components/flux/FluxCardContainer.vue";
 
-// Pour l’exemple, on utilise des données fictives en dur :
-const fluxList = [
-  { id: 1, name: 'Flux #1', status: 'Actif' },
-  { id: 2, name: 'Flux #2', status: 'Arrêté' }
-]
+export default {
+  components: {
+    WorkerGrid,
+    FluxCardContainer
+  },
+  setup(props, { emit }) {
+    const fluxStore = useFluxStore();
+    const fluxList = computed(() => fluxStore.getAllFlux());
 
-const workerList = [
-  { id: 1, name: 'Worker #1', status: 'Running' },
-  { id: 2, name: 'Worker #2', status: 'Idle' }
-]
+    const workerStore = useWorkersStore();
+    const workerList = computed(() => workerStore.getAllWorkers());
 
-function createFlux() {
-  alert('Créer un nouveau flux - Logique à implémenter')
-}
+    const createFlux = () => {
+      alert('Créer un nouveau flux - Logique à implémenter')
+    }
 
-function editFlux(flux) {
-  alert(`Éditer le flux: ${flux.name}`)
-}
+    const stopFlux = (flux) => {
+      alert(`Arrêter le flux: ${flux.name}`)
+    }
 
-function startFlux(flux) {
-  alert(`Démarrer le flux: ${flux.name}`)
-}
+    const stopWorker = (worker) => {
+      alert(`Arrêter le worker: ${worker.name}`)
+    }
 
-function stopFlux(flux) {
-  alert(`Arrêter le flux: ${flux.name}`)
-}
-
-function editWorker(worker) {
-  alert(`Éditer le worker: ${worker.name}`)
-}
-
-function startWorker(worker) {
-  alert(`Démarrer le worker: ${worker.name}`)
-}
-
-function stopWorker(worker) {
-  alert(`Arrêter le worker: ${worker.name}`)
+    return {
+      fluxList,
+      workerList,
+      createFlux,
+      stopFlux,
+      stopWorker
+    }
+  }
 }
 </script>
 
 <style scoped>
 .hub-view {
-  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap : 1rem;
+  height: 82vh;
+}
+
+.hub-view section{
+  margin-top: 4%;
+  width: 50%;
+  text-align: left;
+  height: 40rem;
+  max-height: 80%;
 }
 
 .list {
@@ -89,4 +90,23 @@ function stopWorker(worker) {
   flex-wrap: wrap;
   margin-bottom: 1rem;
 }
+
+.workergrid{
+  background-color: #d2d2d2;
+  border-radius: 6px;
+  border: 1px solid #2a802e;
+  box-shadow: 0 0 8px 2px #49b26a ;
+  margin-top : 1rem;
+  color: black;
+  height: 70vh;
+}
+
+.material-vertical-middle{
+  margin: auto 0;
+}
+
+.div-title {
+  display: flex;
+}
+
 </style>

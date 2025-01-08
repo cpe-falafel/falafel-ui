@@ -29,7 +29,6 @@ onMounted(() => {
     background: #fff;
     border: 1px solid #ddd;
     padding: 1rem;
-    border-radius: 6px;
 }
 
 .preview-wrapper {

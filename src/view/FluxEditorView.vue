@@ -1,14 +1,14 @@
 <template>
-  <div class="flux-editor-view">
-    <h1>Édition de Flux</h1>
+  <div v-if="flux !== undefined" class="flux-editor-view">
+    <h1>Flux Edition ({{ flux.name }})</h1>
 
     <div class="editor-layout">
       <section class="editor-layout__preview">
         <!-- Aperçu du flux rendu -->
-        <PreviewEditor />
-        <div class="editor-actions">
-          <button @click="saveFluxConfig">Enregistrer</button>
-          <button @click="pushFluxConfig">Pousser vers le worker</button>
+        <PreviewEditor class="preview"/>
+
+        <div class="workergrid">
+          <WorkerGrid :isFluxEdition="true"/>
         </div>
       </section>
 
@@ -27,61 +27,94 @@
       </section>
     </div>
   </div>
+  <div v-if="flux === undefined">
+  </div>
 </template>
 
-<script setup>
-import { ref } from 'vue' // bite
-import NodeCanvas from '@/components/NodeEditor/NodeCanvas.vue'
-import NodeConfig from '@/components/NodeEditor/NodeConfig.vue'
-import PreviewEditor from '@/components/NodeEditor/PreviewEditor.vue'
-import NodeAddForm from '@/components/NodeEditor/NodeAddForm.vue'
-import { useNodeStore } from '@/store/useNodeStore'
-// import { saveFluxConfigAPI } from '@/api/fluxService' par exemple
+<script>
+import { ref } from 'vue'
+import NodeCanvas from '@/components/NodeEditor/NodeCanvas.vue';
+import NodeConfig from '@/components/NodeEditor/NodeConfig.vue';
+import PreviewEditor from '@/components/NodeEditor/PreviewEditor.vue';
+import NodeAddForm from '@/components/NodeEditor/NodeAddForm.vue';
+import WorkerGrid from '@/components/worker/WorkerGrid.vue';
+import { useNodeStore } from '@/store/useNodeStore';
+import { useRoute } from 'vue-router';
+import { useFluxStore } from "@/store/fluxStore";
 
-const nodeStore = useNodeStore()
-const selectedNode = ref(null)
+export default {
+  components: {
+    PreviewEditor,
+    WorkerGrid,
+    NodeConfig,
+    NodeCanvas,
+    NodeAddForm,
+    NodeCanvas
+  },
+  setup(props, { emit }) {
+    // Access route parameters
+    const route = useRoute();
+    const fluxUid = route.query.uid;
 
-// Exemples de méthodes pour gérer les events
-function handleNodeSelected(node) {
-  selectedNode.value = node
+    const fluxStore = useFluxStore();
+    const flux = fluxStore.getFluxByUid(fluxUid);
+
+
+    const nodeStore = useNodeStore()
+    const selectedNode = ref(null)
+
+
+    const handleNodeSelected = (node) => {
+      selectedNode.value = node
+    }
+
+    const handleGraphUpdated = (graphData) => {
+      console.log('Graph updated:', graphData)
+    }
+
+    const handleAddNodeFromCanvas = (newNode) => {
+      console.log('Nœud ajouté depuis Canvas (si implémenté) :', newNode)
+    }
+
+    const updateNodeData = (updatedNode) => {
+      console.log('Mettre à jour le nœud sélectionné avec', updatedNode)
+      selectedNode.value = updatedNode
+    }
+
+    const addNode = (newNode) => {
+      console.log('Nœud à ajouter :', newNode)
+    }
+
+    const saveFluxConfig = () => {
+      alert('Configuration du flux sauvegardée !')
+    }
+
+    const pushFluxConfig = () => {
+      alert('Configuration du flux envoyée au worker !')
+    }
+
+    return {
+      handleNodeSelected,
+      handleGraphUpdated,
+      handleAddNodeFromCanvas,
+      updateNodeData,
+      addNode,
+      saveFluxConfig,
+      pushFluxConfig,
+      nodeStore,
+      flux
+    }
+  }
 }
 
-function handleGraphUpdated(graphData) {
-  console.log('Graph updated:', graphData)
-}
 
-function handleAddNodeFromCanvas(newNode) {
-  console.log('Nœud ajouté depuis Canvas (si implémenté) :', newNode)
-  // Ici tu peux gérer la mise à jour de ta liste de nœuds globale
-}
-
-function updateNodeData(updatedNode) {
-  // Logique pour modifier le nœud dans le store ou le state global
-  console.log('Mettre à jour le nœud sélectionné avec', updatedNode)
-  selectedNode.value = updatedNode
-}
-
-function addNode(newNode) {
-  // Logique pour ajouter réellement le nœud dans le graphe
-  // Par exemple, le passer à NodeCanvas via un store, ou un event global
-  console.log('Nœud à ajouter :', newNode)
-}
-
-function saveFluxConfig() {
-  // Appel API pour sauvegarder
-  alert('Configuration du flux sauvegardée !')
-}
-
-function pushFluxConfig() {
-  // Appel pour pousser la config au worker
-  alert('Configuration du flux envoyée au worker !')
-}
 </script>
 
 <style scoped>
 h1 {
   font-size: 2em;
 }
+
 
 .flux-editor-view {
   padding: 1rem;
@@ -97,11 +130,21 @@ h1 {
   min-height: 33vh;
 }
 
+.preview{
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+}
+
+.workergrid{
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  margin-top : 1rem;
+  height: 40vh;
+}
+
 .editor-layout__preview {
   flex: 1;
   color: #242424;
-  background-color: #f7f7f7;
-  border: 1px solid #ddd;
   min-width: 40vw;
 }
 
