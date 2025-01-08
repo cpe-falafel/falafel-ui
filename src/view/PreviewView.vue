@@ -6,8 +6,8 @@
 
         <!-- Si tu as un lien HLS, tu peux tenter un simple player HTML5 -->
         <video v-if="hlsUrl" controls autoplay style="width: 100%; max-width: 600px;">
-        <source :src="hlsUrl" type="application/x-mpegURL" />
-        Votre navigateur ne supporte pas le HLS.
+            <source :src="hlsUrl" type="application/x-mpegURL" />
+            Votre navigateur ne supporte pas le HLS.
         </video>
 
         <p v-else>En attente d’un lien HLS pour prévisualiser le flux.</p>
@@ -24,6 +24,6 @@ const hlsUrl = ref('http://example.com/live/stream_key.m3u8')
 
 <style scoped>
 .preview-view {
-padding: 1rem;
+    padding: 1rem;
 }
 </style>

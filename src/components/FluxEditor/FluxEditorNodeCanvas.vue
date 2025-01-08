@@ -1,8 +1,9 @@
 <template>
     <div class="node-canvas">
         <VueFlow class="flow-container interaction-flow" v-model:nodes="nodes" v-model:edges="edges"
-            :node-types="nodeStore.nodeTypes" :fit-view="true" :defaultEdgeOptions="defaultEdgeOptions" @nodeDoubleClick="onNodeDoubleClick"
-            @nodesSelected="onNodesSelected" @update="onUpdateGraph">
+            :node-types="nodeStore.nodeTypes" :fit-view="true" :defaultEdgeOptions="defaultEdgeOptions"
+            @nodeDoubleClick="onNodeDoubleClick" @nodesSelected="onNodesSelected" @update="onUpdateGraph"
+            @edge-click="onEdgeClick" @pane-click="onPaneClick">
 
             <template #node-customInput="props">
                 <CustomInputNode :id="props.id" />
@@ -36,14 +37,22 @@ const nodeStore = useNodeStore()
 const { onConnect, addEdges } = useVueFlow();
 
 const defaultEdgeOptions = {
-  markerEnd: {
-    type: MarkerType.ArrowClosed,
-  },
-  animated: true,
+    markerEnd: {
+        type: MarkerType.ArrowClosed,
+    },
+    animated: true,
 };
 
-function onNodeDoubleClick(_evt, node) {
-    nodeStore.setSelectedNode(node)
+function onNodeDoubleClick(_evt) {
+    nodeStore.setSelectedNode(_evt.node)
+}
+
+function onEdgeClick() {
+    nodeStore.setSelectedNode(null);
+}
+
+function onPaneClick() {
+    nodeStore.setSelectedNode(null);
 }
 
 function onNodesSelected(nodesSelected) {
