@@ -8,19 +8,26 @@ export const useNodeStore = defineStore("flow", {
         id: "1",
         type: "customInput",
         position: { x: 50, y: 50 },
-        data: { label: "Source", foo: "bar" },
+        data: { label: "IN", type: "_IN" },
       },
       {
         id: "2",
         type: "customOutput",
         position: { x: 550, y: 50 },
-        data: { label: "Output" },
+        data: { label: "OUT", type: "_OUT" },
       },
       {
         id: "3",
         type: "customFilter",
         position: { x: 300, y: 50 },
-        data: { label: "Effet", param: 123, type: "custom" },
+        data: { label: "Effet", type: "drawbox", properties: {
+          color: "#FFFFFF",
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          thickness: 1,
+        } },
       },
     ],
     edges: [
@@ -61,7 +68,7 @@ export const useNodeStore = defineStore("flow", {
       const idx = this.nodes.findIndex((n) => n.id === updatedNode.id);
       if (idx !== -1) {
         this.nodes[idx] = updatedNode;
-        this.nodes = [...this.nodes]
+        this.nodes = [...this.nodes];
       }
     },
   },

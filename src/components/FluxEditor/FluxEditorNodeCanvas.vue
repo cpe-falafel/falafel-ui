@@ -6,7 +6,7 @@
             @edge-click="onEdgeClick" @pane-click="onPaneClick">
 
             <template #node-customInput="props">
-                <CustomInputNode :id="props.id" />
+                <CustomInputNode :id="props.id" :data="props.data" />
             </template>
 
             <template #node-customFilter="props">
@@ -14,7 +14,7 @@
             </template>
 
             <template #node-customOutput="props">
-                <CustomOutputNode :id="props.id" />
+                <CustomOutputNode :id="props.id" :data="props.data" />
             </template>
 
             <Background />
@@ -44,7 +44,9 @@ const defaultEdgeOptions = {
 };
 
 function onNodeDoubleClick(_evt) {
-    nodeStore.setSelectedNode(_evt.node)
+    if(_evt.node.type == "customFilter"){
+        nodeStore.setSelectedNode(_evt.node)
+    }
 }
 
 function onEdgeClick() {

@@ -7,7 +7,7 @@
     </div>
 
     <Handle type="source" :position="Position.Right" :connectable="true" />
-    <Handle id="target-a" type="target" :position="Position.Left" :connectable="true" />
+    <Handle type="target" :position="Position.Left" :connectable="true" />
 </template>
 
 <script setup>
