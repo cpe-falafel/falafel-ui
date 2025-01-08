@@ -1,14 +1,14 @@
 <template>
-  <div class="flux-editor-view">
-    <h1>Édition de Flux</h1>
+  <div v-if="flux !== undefined" class="flux-editor-view">
+    <h1>Flux Edition ({{ flux.name }})</h1>
 
     <div class="editor-layout">
       <section class="editor-layout__preview">
-        <!-- Partie Gauche : Aperçu du flux rendu / Gestion des workers -->
-        <FluxPreview />
-        <div class="editor-actions">
-          <button @click="saveFluxConfig">Enregistrer</button>
-          <button @click="pushFluxConfig">Pousser vers le worker</button>
+        <!-- Aperçu du flux rendu -->
+        <PreviewEditor class="preview"/>
+
+        <div class="workergrid">
+          <WorkerGrid :isFluxEdition="true"/>
         </div>
       </section>
 
@@ -27,56 +27,92 @@
       </section>
     </div>
   </div>
+  <div v-if="flux === undefined">
+  </div>
 </template>
 
-<script setup>
+<script>
 import { ref } from 'vue'
 import NodeCanvas from '@/components/FluxEditor/FluxEditorNodeCanvas.vue'
 import NodeEditForm from '@/components/FluxEditor/FluxEditorNodeEditForm.vue'
-import FluxPreview from '@/components/FluxEditor/FluxEditorPreview.vue'
 import NodeAddForm from '@/components/FluxEditor/FluxEditorNodeAddForm.vue'
 import { useNodeStore } from '@/store/useNodeStore'
-// import { saveFluxConfigAPI } from '@/api/fluxService' par exemple
+import PreviewEditor from '@/components/FluxEditor/FluxEditorPreview.vue';
+import WorkerGrid from '@/components/worker/WorkerGrid.vue';
+import { useRoute } from 'vue-router';
+import { useFluxStore } from "@/store/fluxStore";
 
-const nodeStore = useNodeStore()
-const selectedNode = ref(null)
+export default {
+  components: {
+    PreviewEditor,
+    WorkerGrid,
+    NodeEditForm,
+    NodeCanvas,
+    NodeAddForm
+  },
+  setup(props, { emit }) {
+    // Access route parameters
+    const route = useRoute();
+    const fluxUid = route.query.uid;
 
-function handleNodeSelected(node) {
-  selectedNode.value = node
+    const fluxStore = useFluxStore();
+    const flux = fluxStore.getFluxByUid(fluxUid);
+
+
+    const nodeStore = useNodeStore()
+    const selectedNode = ref(null)
+
+
+    const handleNodeSelected = (node) => {
+      selectedNode.value = node
+    }
+
+    const handleGraphUpdated = (graphData) => {
+      console.log('Graph updated:', graphData)
+    }
+
+    const handleAddNodeFromCanvas = (newNode) => {
+      console.log('Nœud ajouté depuis Canvas (si implémenté) :', newNode)
+    }
+
+    const updateNodeData = (updatedNode) => {
+      console.log('Mettre à jour le nœud sélectionné avec', updatedNode)
+      selectedNode.value = updatedNode
+    }
+
+    const addNode = (newNode) => {
+      console.log('Nœud à ajouter :', newNode)
+    }
+
+    const saveFluxConfig = () => {
+      alert('Configuration du flux sauvegardée !')
+    }
+
+    const pushFluxConfig = () => {
+      alert('Configuration du flux envoyée au worker !')
+    }
+
+    return {
+      handleNodeSelected,
+      handleGraphUpdated,
+      handleAddNodeFromCanvas,
+      updateNodeData,
+      addNode,
+      saveFluxConfig,
+      pushFluxConfig,
+      nodeStore,
+      flux
+    }
+  }
 }
 
-function handleGraphUpdated(graphData) {
-  console.log('Graph updated:', graphData)
-}
-
-function handleAddNodeFromCanvas(newNode) {
-  console.log('Noeud ajouté depuis Canvas (si implémenté) :', newNode)
-  // Gérer la mise à jour de la liste de noeuds globale
-}
-
-function updateNodeData(updatedNode) {
-  console.log('Mettre à jour le nœud sélectionné avec', updatedNode)
-  selectedNode.value = updatedNode
-}
-
-function addNode(newNode) {
-  // Logique pour ajouter réellement le noeud dans le graphe
-  console.log('Nœud à ajouter :', newNode)
-}
-
-function saveFluxConfig() {
-  alert('Configuration du flux sauvegardée !')
-}
-
-function pushFluxConfig() {
-  alert('Configuration du flux envoyée au worker !')
-}
 </script>
 
 <style scoped>
 h1 {
   font-size: 2em;
 }
+
 
 .flux-editor-view {
   padding: 1rem;
@@ -92,11 +128,21 @@ h1 {
   min-height: 33vh;
 }
 
+.preview{
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+}
+
+.workergrid{
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  margin-top : 1rem;
+  height: 40vh;
+}
+
 .editor-layout__preview {
   flex: 1;
   color: #242424;
-  background-color: #f7f7f7;
-  border: 1px solid #ddd;
   min-width: 40vw;
 }
 

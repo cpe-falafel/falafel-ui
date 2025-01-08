@@ -10,8 +10,8 @@
 import { Handle, Position } from '@vue-flow/core'
 
 const props = defineProps({
-    data: {
-        type: Object,
+    id: {
+        type: String,
         required: true
     }
 })
