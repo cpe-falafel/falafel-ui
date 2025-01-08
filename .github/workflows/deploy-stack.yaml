@@ -1,0 +1,18 @@
+name: Trigger Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger deploy in repo-a
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.STACK_PAT }}
+          repository: 'cpe-falafel/falafel-stack'
+          event-type: deploy_ui

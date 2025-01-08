@@ -1,0 +1,101 @@
+<template>
+    <div class="node-canvas">
+        <VueFlow class="flow-container interaction-flow" v-model:nodes="nodes" v-model:edges="edges"
+            :node-types="nodeStore.nodeTypes" :fit-view="true" :defaultEdgeOptions="defaultEdgeOptions"
+            @nodeDoubleClick="onNodeDoubleClick" @nodesSelected="onNodesSelected" @update="onUpdateGraph"
+            @edge-click="onEdgeClick" @pane-click="onPaneClick">
+
+            <template #node-customInput="props">
+                <CustomInputNode :id="props.id" />
+            </template>
+
+            <template #node-customFilter="props">
+                <CustomFilterNode :id="props.id" :data="props.data" />
+            </template>
+
+            <template #node-customOutput="props">
+                <CustomOutputNode :id="props.id" />
+            </template>
+
+            <Background />
+        </VueFlow>
+    </div>
+</template>
+
+<script setup>
+import { computed } from 'vue'
+import { VueFlow, useVueFlow, MarkerType } from '@vue-flow/core'
+import { Background } from '@vue-flow/background'
+import { useNodeStore } from '@/store/useNodeStore'
+import CustomInputNode from '@/components/FluxEditor/CustomInputNode.vue'
+import CustomOutputNode from '@/components/FluxEditor/CustomOutputNode.vue'
+import CustomFilterNode from '@/components/FluxEditor/CustomFilterNode.vue'
+import '@vue-flow/core/dist/style.css'
+import '@/assets/styles/node.css'
+
+const nodeStore = useNodeStore()
+const { onConnect, addEdges } = useVueFlow();
+
+const defaultEdgeOptions = {
+    markerEnd: {
+        type: MarkerType.ArrowClosed,
+    },
+    animated: true,
+};
+
+function onNodeDoubleClick(_evt) {
+    nodeStore.setSelectedNode(_evt.node)
+}
+
+function onEdgeClick() {
+    nodeStore.setSelectedNode(null);
+}
+
+function onPaneClick() {
+    nodeStore.setSelectedNode(null);
+}
+
+function onNodesSelected(nodesSelected) {
+    if (nodesSelected.length > 0) {
+        nodeStore.setSelectedNode(nodesSelected[0])
+    }
+}
+
+function onUpdateGraph() {
+    nodeStore.updateGraph(nodeStore.nodes, nodeStore.edges)
+}
+
+onConnect((connection) => {
+    addEdges(connection)
+})
+
+const nodes = computed({
+    get() {
+        return nodeStore.nodes
+    },
+    set(newVal) {
+        nodeStore.nodes = newVal
+    }
+})
+
+const edges = computed({
+    get() {
+        return nodeStore.edges
+    },
+    set(newVal) {
+        nodeStore.edges = newVal
+    }
+})
+</script>
+
+<style scoped>
+.node-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.flow-container {
+    width: 100%;
+    height: 100%;
+}
+</style>
