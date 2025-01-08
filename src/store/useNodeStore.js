@@ -61,6 +61,7 @@ export const useNodeStore = defineStore("flow", {
       const idx = this.nodes.findIndex((n) => n.id === updatedNode.id);
       if (idx !== -1) {
         this.nodes[idx] = updatedNode;
+        this.nodes = [...this.nodes]
       }
     },
   },
