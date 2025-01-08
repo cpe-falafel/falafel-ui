@@ -1,7 +1,7 @@
 <template>
     <div class="node-canvas">
         <VueFlow class="flow-container interaction-flow" v-model:nodes="nodes" v-model:edges="edges"
-            :node-types="nodeStore.nodeTypes" :fit-view="true" @nodeDoubleClick="onNodeDoubleClick"
+            :node-types="nodeStore.nodeTypes" :fit-view="true" :defaultEdgeOptions="defaultEdgeOptions" @nodeDoubleClick="onNodeDoubleClick"
             @nodesSelected="onNodesSelected" @update="onUpdateGraph">
 
             <template #node-customInput="props">
@@ -23,7 +23,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { VueFlow, useVueFlow, MarkerType } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import { useNodeStore } from '@/store/useNodeStore'
 import CustomInputNode from '@/components/FluxEditor/CustomInputNode.vue'
@@ -34,6 +34,13 @@ import '@/assets/styles/node.css'
 
 const nodeStore = useNodeStore()
 const { onConnect, addEdges } = useVueFlow();
+
+const defaultEdgeOptions = {
+  markerEnd: {
+    type: MarkerType.ArrowClosed,
+  },
+  animated: true,
+};
 
 function onNodeDoubleClick(_evt, node) {
     nodeStore.setSelectedNode(node)
