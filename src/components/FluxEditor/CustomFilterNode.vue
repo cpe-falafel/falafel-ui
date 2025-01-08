@@ -7,15 +7,13 @@ const props = defineProps(['id', 'data'])
 
 <template>
     <div class="node-item__header">
-        <!-- {{ data.label }} -->
-        TEST
+        Filtre - {{ data.label }}
     </div>
     <div class="node-item__body">
         <!-- Affiche d’autres infos/data du nœud -->
-        <!-- Paramètre: {{ data.param || '—' }} -->
+        Paramètre: {{ data.param || '—' }}
     </div>
 
     <Handle type="source" :position="Position.Right" :connectable="true" />
     <Handle id="target-a" type="target" :position="Position.Left" :connectable="true" />
 </template>
-§

@@ -1,7 +1,5 @@
 import { defineStore } from "pinia";
-import { markRaw } from "vue";
 import { MarkerType } from "@vue-flow/core";
-import NodeItem from "@/components/FluxEditor/FluxEditorNodeItem.vue";
 
 export const useNodeStore = defineStore("flow", {
   state: () => ({
@@ -41,13 +39,6 @@ export const useNodeStore = defineStore("flow", {
         animated: true,
       },
     ],
-
-    nodeTypes: {
-      "custom-node": markRaw(NodeItem),
-      "image-node": markRaw(NodeItem),
-      "text-node": markRaw(NodeItem),
-      "border-node": markRaw(NodeItem),
-    },
 
     selectedNode: null,
   }),

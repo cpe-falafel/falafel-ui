@@ -5,12 +5,7 @@ import { Handle, Position } from '@vue-flow/core'
 
 <template>
     <div class="node-item__header">
-        <!-- {{ data.label }} -->
-          TEST
-    </div>
-    <div class="node-item__body">
-        <!-- Affiche d’autres infos/data du nœud -->
-        <!-- Paramètre: {{ data.param || '—' }} -->
+        Output
     </div>
 
     <Handle type="target" :position="Position.Left" :connectable="true" />
