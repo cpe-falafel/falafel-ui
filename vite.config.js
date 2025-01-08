@@ -9,5 +9,19 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src')
     }
+  },
+  server: {
+    proxy: {
+      '/api/flux': {
+        target: 'http://app.falafel.stream',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/flux/, '/api/flux')
+      },
+      '/api/workers': {
+        target: 'http://app.falafel.stream',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/workers/, '/api/workers')
+      }
+    }
   }
 })
