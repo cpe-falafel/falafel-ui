@@ -1,4 +1,7 @@
 <template>
+    <div class="notification-abs">
+      <SaveNotification />
+    </div>
     <div class="preview-editor">
         <div class="preview-wrapper">
             <video v-if="previewUrl" controls autoplay muted>
@@ -12,6 +15,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import SaveNotification from "@/components/FluxEditor/SaveNotification.vue";
 
 const previewUrl = ref(null)
 
@@ -37,5 +41,15 @@ onMounted(() => {
 video {
     height: 100%;
     width: 100%;
+}
+
+.notification-abs{
+  z-index: 1000;
+  position: absolute;
+  top: 70px;
+  width: 100%;
+  height: 300px;
+  left: 0px;
+  pointer-events: none;
 }
 </style>
