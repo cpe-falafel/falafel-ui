@@ -1,6 +1,6 @@
 <template>
     <div class="node-item__header">
-        Source
+        {{ data.label }}
     </div>
 
     <Handle type="source" :position="Position.Right" :connectable="true" />
@@ -10,6 +10,10 @@
 import { Handle, Position } from '@vue-flow/core'
 
 const props = defineProps({
+    data: {
+        type: Object,
+        required: true
+    },
     id: {
         type: String,
         required: true

@@ -1,5 +1,5 @@
 <template>
-    <div class="node-edit-form">
+    <div class="node-config">
         <h2>Configuration du nœud</h2>
         <div class="form-group">
             <label>Label :</label>
@@ -11,16 +11,17 @@
                 <option v-for="type in typeList" :value=type.value>{{ type.label }}</option>
             </select>
         </div>
-        <div class="form-group">
-            <Vue3ColorPicker v-model="nodeData.color" mode="solid" :showColorList="false" :showEyeDrop="false"
-                type="HEX" :showInputMenu="false" :showPickerMode="false"/>
-
+        <div class="form-group"v-for="property in proto" :key="property.key">
+            <label>{{ property.label }} :</label>
+            <ColorPicker v-if="property.type === 'color'" format="hex" shape="circle" picker-type="chrome" use-type="pure" lang="En" theme="white"
+                v-model.color="nodeData[property.key]" />
             Selected color: {{ nodeData.color }}
         </div>
         <div class="form-group">
             <label>Top :</label>
-            <vue-number-input class="num-input" v-model="nodeData.top" :model-value="0" :min="0" inline center controls
-                onkeydown="return event.keyCode !== 69"></vue-number-input>
+            <template>
+                <vue-number-input v-model="nodeData.top" :model-value="0" :min="0" inline center controls></vue-number-input>
+            </template>
         </div>
 
         <button @click="saveNode">Enregistrer</button>
@@ -30,7 +31,6 @@
 <script setup>
 import { reactive, watchEffect } from 'vue'
 import { useNodeStore } from '@/store/useNodeStore'
-import { Vue3ColorPicker } from '@cyhnkckali/vue3-color-picker';
 
 const nodeStore = useNodeStore()
 
@@ -38,8 +38,7 @@ const props = defineProps({
     node: {
         type: Object,
         required: true
-    },
-    proto: Object
+    }
 })
 
 const typeList = [
@@ -49,7 +48,7 @@ const typeList = [
 ]
 
 // On copie les données du nœud dans un objet local pour manipuler le form
-const nodeData = reactive({
+const & reactive({
     label: props.node.data.label || 'Filter',
     type: props.node.data.type || '',
     color: props.node.data.properties.color || '#000000',
@@ -98,9 +97,7 @@ watchEffect(() => {
 </script>
 
 <style scoped>
-.node-edit-form {
-    margin: 0 auto;
-    max-width: 50vw;
+.node-config {
     padding: 1rem;
     border-radius: 6px;
 }
@@ -120,9 +117,5 @@ watchEffect(() => {
     padding: 0.3rem;
     border: 1px solid #ccc;
     border-radius: 4px;
-}
-
-.num-input {
-    color: #242424;
 }
 </style>
