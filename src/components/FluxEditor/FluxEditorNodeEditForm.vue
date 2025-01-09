@@ -1,36 +1,19 @@
 <template>
     <div class="node-edit-form">
         <h2>Configuration du nœud</h2>
-        <div class="form-group">
-            <label>Label :</label>
-            <input v-model="nodeData.label" />
-        </div>
-        <div class="form-group">
-            <label>Type :</label>
-            <select v-model="nodeData.type">
-                <option v-for="type in typeList" :value=type.value>{{ type.label }}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <Vue3ColorPicker v-model="nodeData.color" mode="solid" :showColorList="false" :showEyeDrop="false"
-                type="HEX" :showInputMenu="false" :showPickerMode="false"/>
-
-            Selected color: {{ nodeData.color }}
-        </div>
-        <div class="form-group">
-            <label>Top :</label>
-            <vue-number-input class="num-input" v-model="nodeData.top" :model-value="0" :min="0" inline center controls
-                onkeydown="return event.keyCode !== 69"></vue-number-input>
-        </div>
+        {{ proto }}
+        <FluxEditorFormProperty v-for="prop in typeData.proto" :key="prop.key" :label="prop.label" :type="prop.type"
+            @change="handleChange(prop)" />
 
         <button @click="saveNode">Enregistrer</button>
     </div>
 </template>
 
 <script setup>
-import { reactive, watchEffect } from 'vue'
+import { computed, reactive, watchEffect } from 'vue'
 import { useNodeStore } from '@/store/useNodeStore'
-import { Vue3ColorPicker } from '@cyhnkckali/vue3-color-picker';
+import FluxEditorFormProperty from '@/components/FluxEditor/FluxEditorFormProperty.vue'
+import { FiltersData } from "@/filtersdata"
 
 const nodeStore = useNodeStore()
 
@@ -39,14 +22,11 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    proto: Object
 })
 
-const typeList = [
-    { value: 'drawbox', label: 'Border' },
-    { value: 'image', label: 'Image' },
-    { value: 'text', label: 'Text' },
-]
+const typeData = computed(() =>
+    FiltersData[props.node.data.type]
+)
 
 // On copie les données du nœud dans un objet local pour manipuler le form
 const nodeData = reactive({
@@ -80,6 +60,10 @@ function saveNode() {
         }
     }
     nodeStore.updateNodeData(updatedNode)
+}
+
+function handleChange(proto) {
+    return (val) => nodeData[proto.key] = val;
 }
 
 // Si props.node change, on resynchronise le form
