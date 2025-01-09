@@ -6,7 +6,6 @@
     <nav class="header__nav">
       <ul>
         <li><router-link to="/">Hub</router-link></li>
-        <li><router-link to="/flux-editor">Flux Editor</router-link></li>
         <li><router-link to="/preview">Preview</router-link></li>
       </ul>
     </nav>

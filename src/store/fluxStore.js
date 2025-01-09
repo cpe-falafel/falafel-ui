@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { fetchFlux } from './actions/fluxActions';
 
 export const useFluxStore = defineStore('fluxStore', {
   state: () => ({
@@ -16,9 +15,8 @@ export const useFluxStore = defineStore('fluxStore', {
   },
 
   actions: {
-    fetchFlux,
     addFlux(flux) {
-      if (flux instanceof Flux) {
+      if (flux) {
         this.flux.push(flux);
       } else {
         console.error('Invalid flux object');

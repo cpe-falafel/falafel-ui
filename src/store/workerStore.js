@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { fetchWorkers } from './actions/workerActions';
 import Worker from '../models/worker';
 
 
@@ -16,7 +15,6 @@ export const useWorkersStore = defineStore('workersStore', {
   },
 
   actions: {
-    fetchWorkers,
     addWorker(worker) {
       if (worker instanceof Worker) {
         this.workers.push(worker);
