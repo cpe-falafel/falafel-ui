@@ -1,5 +1,5 @@
 <template>
-    <div class="node-config">
+    <div class="node-edit-form">
         <h2>Configuration du nœud</h2>
         <div class="form-group">
             <label>Label :</label>
@@ -98,7 +98,9 @@ watchEffect(() => {
 </script>
 
 <style scoped>
-.node-config {
+.node-edit-form {
+    margin: 0 auto;
+    max-width: 50vw;
     padding: 1rem;
     border-radius: 6px;
 }
