@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import {computed, onMounted} from 'vue'
 import { VueFlow, useVueFlow, MarkerType } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import { useNodeStore } from '@/store/useNodeStore'
@@ -24,7 +24,12 @@ import '@vue-flow/core/dist/style.css'
 import '@/assets/styles/node.css'
 
 const nodeStore = useNodeStore()
-const { onConnect, addEdges } = useVueFlow();
+const { onConnect, addEdges, fitView } = useVueFlow();
+
+onMounted(() => {
+  nodeStore.optimizeNodePositions();
+  fitView();
+});
 
 const defaultEdgeOptions = {
     markerEnd: {

@@ -1,3 +1,4 @@
 export const DrawboxFilterData = {
-    proto: {}
+    proto: {},
+    handles:{in:["v1"], out:["v1"]},
 }
