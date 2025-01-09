@@ -12,13 +12,14 @@
             </select>
         </div>
         <div class="form-group">
-            <ColorPicker format="hex" shape="circle" picker-type="chrome" use-type="pure" lang="En" theme="white"
-                v-model.color="nodeData.color" />
+            <Vue3ColorPicker v-model="nodeData.color" mode="solid" :showColorList="false" :showEyeDrop="false"
+                type="HEX" :showInputMenu="false" :showPickerMode="false"/>
+
             Selected color: {{ nodeData.color }}
         </div>
         <div class="form-group">
             <label>Top :</label>
-            <vue-number-input v-model="nodeData.top" :model-value="0" :min="0" inline center controls
+            <vue-number-input class="num-input" v-model="nodeData.top" :model-value="0" :min="0" inline center controls
                 onkeydown="return event.keyCode !== 69"></vue-number-input>
         </div>
 
@@ -29,6 +30,7 @@
 <script setup>
 import { reactive, watchEffect } from 'vue'
 import { useNodeStore } from '@/store/useNodeStore'
+import { Vue3ColorPicker } from '@cyhnkckali/vue3-color-picker';
 
 const nodeStore = useNodeStore()
 
@@ -116,5 +118,9 @@ watchEffect(() => {
     padding: 0.3rem;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+.num-input {
+    color: #242424;
 }
 </style>
