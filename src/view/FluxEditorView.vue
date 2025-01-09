@@ -6,13 +6,30 @@
           <PreviewEditor class="preview" />
         </div>
         <div class="worker-grid">
-          <WorkerGrid :isFluxEdition="true" />
+          <WorkerGrid :isFluxEdition="true" :flux="flux" />
         </div>
       </div>
 
       <div class="editor-layout-right">
+        <div class="name-grid"> 
+          <div v-if="!isEditingTitle" class="div-title">
+            <p class="title">Flux name : {{ flux.name }}</p>
+            <span class="material-symbols-outlined title-edit-btn" @click="toggleEditingTitle">edit</span>
+          </div>
+          <div v-if="isEditingTitle" class="div-title-editing">
+            <p class="title">Flux name :</p>
+            <input
+              type="text"
+              v-model="flux.name"
+            /> 
+            <span class="material-symbols-outlined title-edit-btn" @click="toggleEditingTitle">check</span>
+          </div>
+          <button v-if="!isEditingTitle" class="save-btn" @click="openModal">
+            <span class="material-symbols-outlined save-btn-logo">save</span>
+            <span>Save</span>
+          </button>
+        </div>
         <div class="edit-grid">
-          <h2>Flux Edition ({{ flux.name }})</h2>
           <NodeEditForm
             v-if="nodeStore.selectedNode"
             :node="nodeStore.selectedNode"
@@ -68,7 +85,6 @@ export default {
 
     const nodeStore = useNodeStore();
     const selectedNode = ref(null);
-
     const handleNodeSelected = (node) => {
       selectedNode.value = node;
     };
@@ -98,6 +114,11 @@ export default {
       alert("Configuration du flux envoyée au worker !");
     };
 
+    const isEditingTitle = ref(false);
+    const toggleEditingTitle = () => {
+      isEditingTitle.value = ! isEditingTitle.value;
+    }
+
     return {
       handleNodeSelected,
       handleGraphUpdated,
@@ -108,14 +129,71 @@ export default {
       pushFluxConfig,
       nodeStore,
       flux,
+      isEditingTitle,
+      toggleEditingTitle
     };
   },
 };
 </script>
 
 <style scoped>
-h1 {
-  font-size: 2em;
+.title{
+  font-weight: 600;
+  font-size : 3vh;
+}
+
+.div-title{
+  display: flex;
+  align-content: center;
+
+}
+
+.div-title-editing{
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.div-title-editing input[type="text"] {
+    width: 50%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    margin-left: 2%;
+    margin-right: 2%;
+    box-sizing: border-box;
+    border: 3px solid #7e7d7d;
+    transition: 0.5s;
+    outline: none;
+    background-color: white;
+    color: black;
+    font-size: 120%;
+}
+
+.div-title-editing input:disabled {
+    background-color: rgb(180, 180, 180);
+}
+
+.div-title-editing input:focus {
+    border: 3px solid #555;
+}
+
+
+.title-edit-btn{
+  margin: auto 0;
+  display: flex;
+  margin-left: 1vh;
+  color: #797979;
+  cursor: pointer;
+}
+
+.save-btn{
+  margin: auto 0;
+  height: 60%;
+  display: flex;
+}
+
+.save-btn-logo{
+  margin-right: 10%;
 }
 
 .flux-editor-view {
@@ -172,17 +250,26 @@ h1 {
   height: 45vh;
 }
 
-.canvas-grid {
+.name-grid{
+  background-color: #f7f7f7;
+  text-align: left;
+  padding-left: 4%;
+  padding-right: 4%;
   display: flex;
-
-  min-height: 55vh;
+  justify-content: space-between;
+  align-content: center;
+  height: 11vh;
 }
 
 .edit-grid {
   background-color: #f7f7f7;
   max-height: 30vh;
   height: 30vh;
-  overflow-y: scroll;
+}
+
+.canvas-grid {
+  display: flex;
+  min-height: 40vh;
 }
 
 .canvas {

@@ -11,7 +11,8 @@ export const useFluxStore = defineStore('fluxStore', {
     getFluxByUid: (state) => {
       return (uid) => state.flux.find(flux => flux.uid === uid);
     },
-    getAllFlux: (state) => () => state.flux
+    getAllFlux: (state) => () => state.flux,
+    getAllFluxFiltered : (state) => (search) => state.flux.filter(flux => flux.name.includes(search))
   },
 
   actions: {

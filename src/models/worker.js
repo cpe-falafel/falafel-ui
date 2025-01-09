@@ -4,6 +4,7 @@ export default class Worker {
       configurationValue,
       uri,
       apiKey,
+      lastFluxUid,
       uid = null,
       lastUpdate = null,
       previewUri = null,
@@ -11,6 +12,7 @@ export default class Worker {
       packageKey = null
     ) {
       this.uid = uid;
+      this.lastFluxUid = lastFluxUid;
       this.groupUid = groupUid;
       this.lastUpdate = lastUpdate;
       this.configurationValue = configurationValue;

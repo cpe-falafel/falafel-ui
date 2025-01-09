@@ -48,31 +48,31 @@ import Worker from "@/models/worker";
 export default {
     props: {
         showModal: {
-        type: Boolean,
-        required: true,
+          type: Boolean,
+          required: true,
         },
     },
     setup(props, { emit }) {
         const worker = ref(new Worker());
 
         const resetForm = () => {
-        worker.value = new Worker();
+          worker.value = new Worker();
         };
 
         const closeModal = () => {
-        emit("close:cancel");
-        resetForm();
+          emit("close:cancel");
+          resetForm();
         };
 
         const createWorker = () => {
-        emit("close:create", worker.value);
-        resetForm();
+          emit("close:create", worker.value);
+          resetForm();
         };
 
         return {
-        worker,
-        closeModal,
-        createWorker,
+          worker,
+          closeModal,
+          createWorker,
         };
     },
 };
