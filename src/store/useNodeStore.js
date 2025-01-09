@@ -21,7 +21,7 @@ export const useNodeStore = defineStore("flow", {
         type: "customFilter",
         position: { x: 300, y: 50 },
         data: { label: "Effet", type: "drawbox", properties: {
-          color: "#FFFFFF",
+          color: "#000000",
           top: 0,
           bottom: 0,
           left: 0,

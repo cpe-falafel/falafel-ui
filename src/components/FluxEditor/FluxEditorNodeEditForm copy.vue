@@ -11,15 +11,17 @@
                 <option v-for="type in typeList" :value=type.value>{{ type.label }}</option>
             </select>
         </div>
-        <div class="form-group">
-            <ColorPicker format="hex" shape="circle" picker-type="chrome" use-type="pure" lang="En" theme="white"
-                v-model.color="nodeData.color" />
+        <div class="form-group"v-for="property in proto" :key="property.key">
+            <label>{{ property.label }} :</label>
+            <ColorPicker v-if="property.type === 'color'" format="hex" shape="circle" picker-type="chrome" use-type="pure" lang="En" theme="white"
+                v-model.color="nodeData[property.key]" />
             Selected color: {{ nodeData.color }}
         </div>
         <div class="form-group">
             <label>Top :</label>
-            <vue-number-input v-model="nodeData.top" :model-value="0" :min="0" inline center controls
-                onkeydown="return event.keyCode !== 69"></vue-number-input>
+            <template>
+                <vue-number-input v-model="nodeData.top" :model-value="0" :min="0" inline center controls></vue-number-input>
+            </template>
         </div>
 
         <button @click="saveNode">Enregistrer</button>
@@ -36,8 +38,7 @@ const props = defineProps({
     node: {
         type: Object,
         required: true
-    },
-    proto: Object
+    }
 })
 
 const typeList = [

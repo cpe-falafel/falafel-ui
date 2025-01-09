@@ -3,7 +3,7 @@
         Filtre - {{ data.label }}
     </div>
     <div class="node-item__body">
-        Paramètre: {{ data.param || '—' }}
+        Paramètre: {{ data || '—' }}
     </div>
 
     <Handle type="source" :position="Position.Right" :connectable="true" />
