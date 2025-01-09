@@ -2,7 +2,7 @@
     <div class="node-item__header">
         {{ data.label }}
     </div>
-    <div class="node-item__body">
+    <div class="node-item__body" :style="{maxWidth: '200px'}">
         Paramètre: {{ data.properties || '—' }}
     </div>
 
@@ -40,7 +40,6 @@ const props = defineProps({
 })
 
 const typeData = computed(() => {
-  debugger;
   return FiltersData[props.data.type]
 });
 

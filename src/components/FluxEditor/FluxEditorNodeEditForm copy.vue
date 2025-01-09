@@ -48,7 +48,7 @@ const typeList = [
 ]
 
 // On copie les données du nœud dans un objet local pour manipuler le form
-const nodeData = reactive({
+const & reactive({
     label: props.node.data.label || 'Filter',
     type: props.node.data.type || '',
     color: props.node.data.properties.color || '#000000',

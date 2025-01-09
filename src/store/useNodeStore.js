@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { MarkerType } from "@vue-flow/core";
+import {optimizeNodePosition} from "@/utils/graphPosUtils.js";
 
 export const useNodeStore = defineStore("flow", {
   state: () => ({
@@ -74,6 +75,9 @@ export const useNodeStore = defineStore("flow", {
         this.nodes[idx] = updatedNode;
         this.nodes = [...this.nodes];
       }
+    },
+    optimizeNodePositions() {
+      this.nodes = optimizeNodePosition(this.nodes, this.edges).map(n => ({...n, computedPositions: undefined}));
     },
   },
 
