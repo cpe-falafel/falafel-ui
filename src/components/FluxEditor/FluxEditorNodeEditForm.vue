@@ -47,7 +47,7 @@ function saveNode() {
     nodeStore.updateNodeData(updatedNode)
 }
 
-// Optionnel : si props.node change, on resynchronise le form
+// Si props.node change, on resynchronise le form
 watchEffect(() => {
     if (props.node) {
         nodeData.label = props.node.data.label
