@@ -1,6 +1,5 @@
 <template>
     <div class="preview-editor">
-        <h2>Prévisualisation</h2>
         <div class="preview-wrapper">
             <video v-if="previewUrl" controls autoplay muted>
                 <source :src="previewUrl" type="video/mp4" />
@@ -23,21 +22,20 @@ onMounted(() => {
 
 <style scoped>
 .preview-editor {
-    background: #fff;
-    border: 1px solid #ddd;
-    padding: 1rem;
+    width: 100%;
+    height: 100%;
 }
 
 .preview-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 200px;
-    background: #f0f0f0;
+    height: 100%;
+    width: 100%;
 }
 
 video {
-    max-width: 100%;
-    max-height: 100%;
+    height: 100%;
+    width: 100%;
 }
 </style>

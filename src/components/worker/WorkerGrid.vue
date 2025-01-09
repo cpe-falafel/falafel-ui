@@ -1,7 +1,7 @@
 <template>
   <div class="div-parent">
-    <div v-if="isFluxEdition" class="div-flex">
-      <h3>Workers assignés</h3>
+    <div v-if="isFluxEdition" class="div-header">
+      <p>Workers assignés</p>
       <button class="add-btn" @click="openModal">
         <span class="material-symbols-outlined">add</span>
         <span>Add</span>
@@ -17,7 +17,7 @@
         :index="index"
       />
     </div>
-    <div v-if="this.workers.length == 0" class="div-empty">
+    <div v-if="this.workers.length == 0" class="div-empty" :class="{ 'div-empty-edition': isFluxEdition}">
       <div v-if="workers.length === 0" class="div-not-found">
             <div class="div-flex">
                 <span class="material-symbols-outlined not-found">error</span>
@@ -109,13 +109,8 @@ div {
   height: 100%;
 }
 
-.div-flex {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .add-btn {
+  margin: auto 0 ;
   display: flex;
 }
 
@@ -143,6 +138,11 @@ div {
     align-items: center;
     text-align: center;
 }
+
+.div-empty-edition{
+  height: 80%;
+}
+
 .div-not-found{
     display: block;
     width: 100%;
@@ -151,6 +151,18 @@ div {
 .div-flex{
     display: flex;
     justify-content: center;
+}
+
+.div-header{
+    display: flex;
+    justify-content: space-between;
+    padding: 2%;
+    height: 20%;
+}
+
+.div-header p{
+  font-weight: 700;
+  margin-left: 4%;
 }
 
 .add-first-worker{
