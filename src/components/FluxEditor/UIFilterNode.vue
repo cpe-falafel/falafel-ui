@@ -7,20 +7,26 @@
     </div>
 
   <!--OUT-->
-  <Handle v-for="key in data.handles.out" :key="`s-${key}`"
+  <Handle v-for="(key,idx) in typeData.handles.out" :key="`s-${key}`"
           :id="`source-${props.id}-${key}`"
           type="source" :position="Position.Right"
-          :connectable="uniqueCollectHandler" />
+          :connectable="uniqueCollectHandler"
+          :style="{top: `calc(${(idx+0.5)*getUnit(typeData.handles.out)}% - 10px)`, height: '20px'}"
+  />
 
   <!--IN-->
-  <Handle v-for="key in data.handles.in" :key="`t-${key}`"
+  <Handle v-for="(key,idx) in typeData.handles.in" :key="`t-${key}`"
           :id="`target-${props.id}-${key}`"
           type="target" :position="Position.Left"
-          :connectable="uniqueCollectHandler" />
+          :connectable="uniqueCollectHandler"
+          :style="{top: `calc(${(idx+0.5)*getUnit(typeData.handles.in)}% - 10px)`, height: '20px'}"
+  />
 </template>
 
 <script setup>
 import { Handle, Position } from '@vue-flow/core'
+import {FiltersData} from "@/filtersdata/index.js";
+import {computed} from "vue";
 
 const props = defineProps({
     data: {
@@ -33,7 +39,17 @@ const props = defineProps({
     }
 })
 
+const typeData = computed(() => {
+  debugger;
+  return FiltersData[props.data.type]
+});
+
+const getUnit = (handles) => 100/handles.length;
+
 const uniqueCollectHandler = (node, connectedEdges) => {
   return connectedEdges.length < 1;
 }
+
+</script>
+<script setup lang="ts">
 </script>

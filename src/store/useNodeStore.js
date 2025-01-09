@@ -8,19 +8,19 @@ export const useNodeStore = defineStore("flow", {
         id: "1",
         type: "customFilter",
         position: { x: 50, y: 50 },
-        data: { label: "Entrée", type: "_IN", handles:{out:["v1", "a1"]}, properties: {src:""} },
+        data: { label: "Entrée", type: "_IN", properties: {src:""} },
       },
       {
         id: "2",
         type: "customFilter",
         position: { x: 550, y: 50 },
-        data: { label: "Sortie", type: "_OUT", handles:{in:["v1", "a1"]}, properties: {dst:""} },
+        data: { label: "Sortie", type: "_OUT", properties: {dst:""} },
       },
       {
         id: "3",
         type: "customFilter",
         position: { x: 300, y: 50 },
-        data: { label: "Ajout Cadre", type: "drawbox", handles:{in:["v1"], out:["v1"]}, properties: {
+        data: { label: "Ajout Cadre", type: "drawbox", properties: {
           color: "#000000",
           top: 0,
           bottom: 0,
