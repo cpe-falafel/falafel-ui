@@ -10,7 +10,7 @@
   <Handle v-for="(key,idx) in typeData.handles.out" :key="`s-${key}`"
           :id="`source-${props.id}-${key}`"
           type="source" :position="Position.Right"
-          :connectable="uniqueCollectHandler"
+          :connectable="uniqueCollectHandler(`source-${props.id}-${key}`, null)"
           :style="{top: `calc(${(idx+0.5)*getUnit(typeData.handles.out)}% - 10px)`, height: '20px'}"
   />
 
@@ -18,7 +18,7 @@
   <Handle v-for="(key,idx) in typeData.handles.in" :key="`t-${key}`"
           :id="`target-${props.id}-${key}`"
           type="target" :position="Position.Left"
-          :connectable="uniqueCollectHandler"
+          :connectable="uniqueCollectHandler(null, `target-${props.id}-${key}`)"
           :style="{top: `calc(${(idx+0.5)*getUnit(typeData.handles.in)}% - 10px)`, height: '20px'}"
   />
 </template>
@@ -45,8 +45,11 @@ const typeData = computed(() => {
 
 const getUnit = (handles) => 100/handles.length;
 
-const uniqueCollectHandler = (node, connectedEdges) => {
-  return connectedEdges.length < 1;
+function uniqueCollectHandler(src,tgt){
+  return (node, connectedEdges) => {
+    const edges = connectedEdges.filter(e => e.sourceHandle === src || e.targetHandle === tgt)
+    return edges.length < 1;
+  }
 }
 
 </script>
