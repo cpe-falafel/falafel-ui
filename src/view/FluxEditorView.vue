@@ -13,20 +13,13 @@
       <div class="editor-layout-right">
         <div class="edit-grid">
           <h2>Flux Edition ({{ flux.name }})</h2>
-          <NodeEditForm
-            v-if="nodeStore.selectedNode"
-            :node="nodeStore.selectedNode"
-            @updateNode="updateNodeData"
-          />
+          <NodeEditForm v-if="nodeStore.selectedNode" :node="nodeStore.selectedNode" @updateNode="updateNodeData" />
           <NodeAddForm v-else @addNode="addNode" />
         </div>
         <div class="canvas-grid">
           <div class="canvas">
-            <NodeCanvas
-              @nodeSelected="handleNodeSelected"
-              @graphUpdated="handleGraphUpdated"
-              @addNode="handleAddNodeFromCanvas"
-            />
+            <NodeCanvas @nodeSelected="handleNodeSelected" @graphUpdated="handleGraphUpdated"
+              @addNode="handleAddNodeFromCanvas" />
           </div>
         </div>
       </div>
@@ -42,9 +35,8 @@ import NodeAddForm from "@/components/FluxEditor/FluxEditorNodeAddForm.vue";
 import { useNodeStore } from "@/store/useNodeStore";
 import PreviewEditor from "@/components/FluxEditor/FluxEditorPreview.vue";
 import WorkerGrid from "@/components/worker/WorkerGrid.vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useFluxStore } from "@/store/fluxStore";
-import { useRouter } from "vue-router";
 
 export default {
   components: {
@@ -152,7 +144,6 @@ h1 {
   flex-direction: column;
   gap: 2.5vh;
   min-width: 40vw;
-  gap: 2.5vh;
 }
 
 .editor-layout-right {
@@ -166,6 +157,7 @@ h1 {
 .preview-grid {
   height: 40vh;
 }
+
 .worker-grid {
   background-color: #f7f7f7;
   border: 1px solid #ddd;
@@ -174,7 +166,6 @@ h1 {
 
 .canvas-grid {
   display: flex;
-
   min-height: 55vh;
 }
 

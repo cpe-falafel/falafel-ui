@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, ref} from "vue";
 import {serializeStore} from "@/services/serialGraphService.js";
 import {useNodeStore} from "@/store/useNodeStore.js";
 

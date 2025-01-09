@@ -2,8 +2,8 @@
     <div class="form-group">
         <label>{{ props.label }} :</label>
         <div v-if="props.type == 'color'">
-            <Vue3ColorPicker class="color-picker" @update:modelValue="sendValue" mode="solid" :showColorList="false" :showEyeDrop="false"
-                type="HEX" :showInputMenu="false" :showPickerMode="false" />
+            <Vue3ColorPicker class="color-picker" @update:modelValue="sendValue" mode="solid" :showColorList="false"
+                :showEyeDrop="false" type="HEX" :showInputMenu="false" :showPickerMode="false" />
         </div>
         <div v-if="props.type == 'uint'">
             <vue-number-input @update:modelValue="sendValue" :model-value="0" :min="0" inline center controls
@@ -40,7 +40,6 @@ const emit = defineEmits([
 function sendValue(val) {
     emit("change", val)
 }
-
 </script>
 
 <style scoped>

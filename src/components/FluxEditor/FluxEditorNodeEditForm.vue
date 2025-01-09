@@ -88,25 +88,4 @@ watchEffect(() => {
     padding: 1rem;
     border-radius: 6px;
 }
-
-.form-group {
-    margin-bottom: 0.5rem;
-    display: flex;
-    flex-direction: column;
-}
-
-.form-group label {
-    font-weight: bold;
-    margin-bottom: 0.2rem;
-}
-
-.form-group input {
-    padding: 0.3rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.num-input {
-    color: #242424;
-}
 </style>

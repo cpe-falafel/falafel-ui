@@ -1,9 +1,9 @@
 <template>
     <div class="node-canvas">
-        <VueFlow class="flow-container interaction-flow" v-model:nodes="nodes" v-model:edges="edges"
-            :node-types="nodeStore.nodeTypes" :fit-view="true" :defaultEdgeOptions="defaultEdgeOptions"
-            @nodeDoubleClick="onNodeDoubleClick" @nodesSelected="onNodesSelected" @update="onUpdateGraph"
-            @edge-click="onEdgeClick" @pane-click="onPaneClick">
+        <VueFlow class="flow-container" v-model:nodes="nodes" v-model:edges="edges" :node-types="nodeStore.nodeTypes"
+            :fit-view="true" :defaultEdgeOptions="defaultEdgeOptions" @nodeDoubleClick="onNodeDoubleClick"
+            @nodesSelected="onNodesSelected" @update="onUpdateGraph" @edge-click="onEdgeClick"
+            @pane-click="onPaneClick">
 
             <template #node-customFilter="props">
                 <UIFilterNode :id="props.id" :data="props.data" />
@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import {computed, onMounted} from 'vue'
+import { computed, onMounted } from 'vue'
 import { VueFlow, useVueFlow, MarkerType } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import { useNodeStore } from '@/store/useNodeStore'
@@ -27,8 +27,8 @@ const nodeStore = useNodeStore()
 const { onConnect, addEdges, fitView } = useVueFlow();
 
 onMounted(() => {
-  nodeStore.optimizeNodePositions();
-  fitView();
+    nodeStore.optimizeNodePositions();
+    fitView();
 });
 
 const defaultEdgeOptions = {
@@ -39,7 +39,7 @@ const defaultEdgeOptions = {
 };
 
 function onNodeDoubleClick(_evt) {
-    if(_evt.node.type == "customFilter"){
+    if (_evt.node.type == "customFilter") {
         nodeStore.setSelectedNode(_evt.node)
     }
 }
