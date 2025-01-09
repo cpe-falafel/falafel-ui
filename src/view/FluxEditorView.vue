@@ -12,16 +12,16 @@
         </div>
       </section>
 
-      <!-- Partie droite : Config du nœud sélectionné et Preview -->
+      <!-- Partie droite : Config du noeud sélectionné / Ajout de nouveau noeud -->
       <section class="editor-layout__sidebar">
-        <!-- Config du nœud sélectionné -->
-        <NodeConfig v-if="nodeStore.selectedNode" :node="nodeStore.selectedNode" @updateNode="updateNodeData" />
-        <!-- Sinon, on affiche la possibilité d’ajouter un nœud -->
+        <!-- Config du noeud sélectionné -->
+        <NodeEditForm v-if="nodeStore.selectedNode" :node="nodeStore.selectedNode" @updateNode="updateNodeData" />
+        <!-- Sinon, on affiche la possibilité d’ajouter un noeud -->
         <NodeAddForm v-else @addNode="addNode" />
       </section>
     </div>
     <div class="editor-layout">
-      <!-- Partie basse : Graphe de nœuds -->
+      <!-- Partie basse : Graphe de noeuds -->
       <section class="editor-layout__canvas">
         <NodeCanvas @nodeSelected="handleNodeSelected" @graphUpdated="handleGraphUpdated" @addNode="handleAddNodeFromCanvas" />
       </section>
@@ -33,12 +33,12 @@
 
 <script>
 import { ref } from 'vue'
-import NodeCanvas from '@/components/NodeEditor/NodeCanvas.vue';
-import NodeConfig from '@/components/NodeEditor/NodeConfig.vue';
-import PreviewEditor from '@/components/NodeEditor/PreviewEditor.vue';
-import NodeAddForm from '@/components/NodeEditor/NodeAddForm.vue';
+import NodeCanvas from '@/components/FluxEditor/FluxEditorNodeCanvas.vue'
+import NodeEditForm from '@/components/FluxEditor/FluxEditorNodeEditForm.vue'
+import NodeAddForm from '@/components/FluxEditor/FluxEditorNodeAddForm.vue'
+import { useNodeStore } from '@/store/useNodeStore'
+import PreviewEditor from '@/components/FluxEditor/FluxEditorPreview.vue';
 import WorkerGrid from '@/components/worker/WorkerGrid.vue';
-import { useNodeStore } from '@/store/useNodeStore';
 import { useRoute } from 'vue-router';
 import { useFluxStore } from "@/store/fluxStore";
 
@@ -46,10 +46,9 @@ export default {
   components: {
     PreviewEditor,
     WorkerGrid,
-    NodeConfig,
+    NodeEditForm,
     NodeCanvas,
-    NodeAddForm,
-    NodeCanvas
+    NodeAddForm
   },
   setup(props, { emit }) {
     // Access route parameters
@@ -106,7 +105,6 @@ export default {
     }
   }
 }
-
 
 </script>
 

@@ -14,12 +14,9 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-// L’URL du flux de prévisualisation
 const previewUrl = ref(null)
 
 onMounted(() => {
-    // Logique pour initialiser/charger l'URL
-    // Par exemple, tu pourrais faire un appel API pour récupérer l'URL du flux
     previewUrl.value = 'https://www.w3schools.com/html/mov_bbb.mp4'
 })
 </script>
