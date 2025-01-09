@@ -6,21 +6,21 @@ export const useNodeStore = defineStore("flow", {
     nodes: [
       {
         id: "1",
-        type: "customInput",
+        type: "customFilter",
         position: { x: 50, y: 50 },
-        data: { label: "IN", type: "_IN" },
+        data: { label: "Entrée", type: "_IN", handles:{out:["v1", "a1"]}, properties: {src:""} },
       },
       {
         id: "2",
-        type: "customOutput",
+        type: "customFilter",
         position: { x: 550, y: 50 },
-        data: { label: "OUT", type: "_OUT" },
+        data: { label: "Sortie", type: "_OUT", handles:{in:["v1", "a1"]}, properties: {dst:""} },
       },
       {
         id: "3",
         type: "customFilter",
         position: { x: 300, y: 50 },
-        data: { label: "Effet", type: "drawbox", properties: {
+        data: { label: "Ajout Cadre", type: "drawbox", handles:{in:["v1"], out:["v1"]}, properties: {
           color: "#000000",
           top: 0,
           bottom: 0,
@@ -35,6 +35,8 @@ export const useNodeStore = defineStore("flow", {
         id: "e1-3",
         source: "1",
         target: "3",
+        sourceHandle: "source-1-v1",
+        targetHandle: "target-3-v1",
         markerEnd: MarkerType.ArrowClosed,
         animated: true,
       },
@@ -42,6 +44,8 @@ export const useNodeStore = defineStore("flow", {
         id: "e3-2",
         source: "3",
         target: "2",
+        sourceHandle: "source-3-v1",
+        targetHandle: "target-2-v1",
         markerEnd: MarkerType.ArrowClosed,
         animated: true,
       },

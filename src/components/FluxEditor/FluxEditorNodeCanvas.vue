@@ -5,16 +5,8 @@
             @nodeDoubleClick="onNodeDoubleClick" @nodesSelected="onNodesSelected" @update="onUpdateGraph"
             @edge-click="onEdgeClick" @pane-click="onPaneClick">
 
-            <template #node-customInput="props">
-                <CustomInputNode :id="props.id" :data="props.data" />
-            </template>
-
             <template #node-customFilter="props">
-                <CustomFilterNode :id="props.id" :data="props.data" />
-            </template>
-
-            <template #node-customOutput="props">
-                <CustomOutputNode :id="props.id" :data="props.data" />
+                <UIFilterNode :id="props.id" :data="props.data" />
             </template>
 
             <Background />
@@ -27,9 +19,7 @@ import { computed } from 'vue'
 import { VueFlow, useVueFlow, MarkerType } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import { useNodeStore } from '@/store/useNodeStore'
-import CustomInputNode from '@/components/FluxEditor/CustomInputNode.vue'
-import CustomOutputNode from '@/components/FluxEditor/CustomOutputNode.vue'
-import CustomFilterNode from '@/components/FluxEditor/CustomFilterNode.vue'
+import UIFilterNode from '@/components/FluxEditor/UIFilterNode.vue'
 import '@vue-flow/core/dist/style.css'
 import '@/assets/styles/node.css'
 
