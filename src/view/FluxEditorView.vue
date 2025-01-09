@@ -27,8 +27,7 @@
       </section>
     </div>
   </div>
-  <div v-if="flux === undefined">
-  </div>
+
 </template>
 
 <script>
@@ -41,6 +40,7 @@ import WorkerGrid from '@/components/worker/WorkerGrid.vue';
 import { useNodeStore } from '@/store/useNodeStore';
 import { useRoute } from 'vue-router';
 import { useFluxStore } from "@/store/fluxStore";
+import { useRouter } from 'vue-router';
 
 export default {
   components: {
@@ -54,7 +54,11 @@ export default {
   setup(props, { emit }) {
     // Access route parameters
     const route = useRoute();
+    const router = useRouter();
     const fluxUid = route.query.uid;
+    if(!fluxUid){
+      router.replace('/');
+    }
 
     const fluxStore = useFluxStore();
     const flux = fluxStore.getFluxByUid(fluxUid);
