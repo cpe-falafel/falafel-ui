@@ -4,6 +4,7 @@
 
 
 import {FiltersData} from "@/filtersdata/index.js";
+import {MarkerType} from "@vue-flow/core";
 
 /**
  * Serializes FilterNodes
@@ -41,7 +42,7 @@ function _uiNodeToGenericNodeKv({id, data}){
         type: data.type,
         properties: data.properties,
         in: handles.in?.map(_ => null) || [],
-        out: handles.out?.map(_ => null) || []
+        out: handles.out?.map(_ => null) || [],
     }];
 }
 
@@ -74,4 +75,53 @@ export function serializeStore({nodes, edges}){
     const genericNodes = _retrieveIsolatedFilterNodes(nodes);
     _linkUiNodes(genericNodes, edges);
     return _serialize(genericNodes);
+}
+
+/**
+ * @param {string} confValue
+ */
+export function storeFromSerialGraph(confValue){
+    /**
+     * for each source/dest = [nodeId, nodeHandleName]
+     * @type {{[id:string]: {src?:[string,string], dst?:[string,string]}}}
+     */
+    const edges = {};
+
+    /**
+     * @type {{[k:string]: GenericFilterNode}}
+     */
+    const conf = JSON.parse(confValue);
+    const nodesForStore= Object.entries(conf).map(([k, gn]) => {
+        const typeData = FiltersData[gn.type];
+        gn.in.forEach((e, i) => {
+            if (e == null) return;
+            edges[e] = {...(edges[e] || {}), dst: [k, typeData.handles.in[i]]};
+        });
+        gn.out.forEach((e, i) => {
+            if (e == null) return;
+            edges[e] = {...(edges[e] || {}), src: [k, typeData.handles.out[i]]};
+        });
+
+        return {
+            id: k,
+            type: "customFilter",
+            position: {x:0, y:0},
+            data: {
+                type: gn.type,
+                properties: gn.properties
+            }
+        };
+    });
+    debugger;
+    const edgesForStore = Object.entries(edges).filter(([_,e]) => e.src && e.dst).map(([k, edge]) => ({
+        id: k,
+        source: edge.src[0],
+        target: edge.dst[0],
+        sourceHandle: edge.src[1],
+        targetHandle: edge.dst[1],
+        markerEnd: MarkerType.ArrowClosed,
+        animated: true
+    }));
+
+    return {nodes: nodesForStore, edges: edgesForStore};
 }

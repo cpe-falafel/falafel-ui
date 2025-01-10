@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import {MarkerType} from "@vue-flow/core";
 import {optimizeNodePosition} from "@/utils/graphPosUtils.js";
+import {storeFromSerialGraph} from "@/services/serialGraphService.js";
 
 export const useNodeStore = defineStore("flow", {
   state: () => ({
@@ -59,6 +60,7 @@ export const useNodeStore = defineStore("flow", {
   actions: {
     setSelectedNode(node) {
       this.selectedNode = node;
+      window.loadConf = (s) => this.loadConf(s);
     },
 
     updateGraph(nodes, edges) {
@@ -102,6 +104,15 @@ export const useNodeStore = defineStore("flow", {
     optimizeNodePositions() {
       this.nodes = optimizeNodePosition(this.nodes, this.edges).map(n => ({...n, computedPositions: undefined}));
     },
+    /**
+     *
+     * @param {string} conf
+     */
+    loadConf(conf){
+      const {nodes, edges} = storeFromSerialGraph(conf);
+      this.nodes = nodes;
+      this.edges = edges;
+    }
   },
 
   getters: {
