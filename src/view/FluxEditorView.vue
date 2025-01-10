@@ -61,13 +61,9 @@ import PreviewEditor from "@/components/FluxEditor/FluxEditorPreview.vue";
 import WorkerGrid from "@/components/worker/WorkerGrid.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useFluxStore } from "@/store/fluxStore";
-<<<<<<< HEAD
-import { useRouter } from "vue-router";
 import SaveNotification from '@/components/FluxEditor/SaveNotification.vue'
 import { serializeStore } from "@/services/serialGraphService.js";
 import fluxService from '../services/fluxService';
-=======
->>>>>>> main
 
 export default {
   components: {
@@ -102,8 +98,13 @@ export default {
     const saveNotifyer = ref(null);
     const selectedNode = ref(null);
 
-    /* Ctrl+s listener */
+    setTimeout(() => {
+      nodeStore.loadConf(fluxStore.getFluxByUid(fluxUid).value);
+    }, 500)
+
+    /* Initialization */
     onMounted(() => {
+
       document.addEventListener("keydown", function (event) {
         if ((event.ctrlKey || event.metaKey) && event.key === "s") {
           event.preventDefault();
@@ -299,13 +300,9 @@ input:focus {
   padding-left: 4%;
   padding-right: 4%;
   display: flex;
-<<<<<<< HEAD
   justify-content: space-between;
   align-content: center;
   height: 11vh;
-=======
-  min-height: 55vh;
->>>>>>> main
 }
 
 .edit-grid {

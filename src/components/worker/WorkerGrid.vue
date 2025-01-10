@@ -87,9 +87,7 @@ export default {
     };
 
     const handleDeleteWorker = (worker) => {
-      //workerStore.removeWorker(worker);
-
-      //todo
+      workerService.deleteWorkerAndRefreshStore(worker.uid);
     }
 
     return {

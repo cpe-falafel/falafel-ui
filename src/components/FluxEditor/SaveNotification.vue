@@ -44,6 +44,7 @@ export default {
   transform: translateY(-2em);
   transition: transform 0.2s ease-in-out; 
   opacity: 0;
+  margin-top: 2%;
 }
 
 .check-circle {

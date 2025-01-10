@@ -2,9 +2,9 @@
     <div class="div-item">
         <p>{{worker.uid}}</p>
         <p>{{worker.uri}}</p>
-        <span v-if="IsSync" class="material-symbols-outlined sync">sync</span>
+        <!-- <span v-if="IsSync" class="material-symbols-outlined sync">sync</span>
         <span v-if="!IsSync" class="material-symbols-outlined not-sync">sync_disabled</span>
-        <span v-if="isLinkedToFlux" class="material-symbols-outlined star">star</span>
+        <span v-if="isLinkedToFlux" class="material-symbols-outlined star">star</span> -->
         <div class="div-btn" @click="deleteWorker()">
             <span class="material-symbols-outlined">delete</span>
         </div>
