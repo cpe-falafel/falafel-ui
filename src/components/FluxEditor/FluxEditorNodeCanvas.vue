@@ -1,6 +1,6 @@
 <template>
     <div class="node-canvas">
-        <VueFlow class="flow-container" v-model:nodes="nodes" v-model:edges="edges" :node-types="nodeStore.nodeTypes"
+        <VueFlow class="flow-container" :nodes="nodes" :edges="edges" :node-types="nodeStore.nodeTypes"
             :fit-view="true" :defaultEdgeOptions="defaultEdgeOptions" @nodeDoubleClick="onNodeDoubleClick"
             @nodesSelected="onNodesSelected" @update="onUpdateGraph" @edge-click="onEdgeClick"
             @pane-click="onPaneClick">

@@ -3,7 +3,7 @@
         <h2>Ajouter un nouveau nœud</h2>
 
         <div class="form-group">
-            <label>Label :</label>
+            <label>Nom :</label>
             <input v-model="label" placeholder="Nom du nœud" />
         </div>
 
@@ -21,20 +21,33 @@ const label = ref('')
 const type = ref('customFilter')
 const posX = ref(100)
 const posY = ref(100)
+const dataType = ref('drawbox')
+const dataColor = ref('#000000')
+const dataTop = ref(0)
+const dataBottom = ref(0)
+const dataLeft = ref(0)
+const dataRight = ref(0)
+const dataThickness = ref(1)
 
 function createNode() {
     const newNode = {
         id: Date.now().toString(),
         type: type.value,
         position: { x: posX.value, y: posY.value },
-        data: { label: label.value }
+        data: {
+            label: label.value, type: dataType.value, properties: {
+                color: dataColor.value,
+                top: dataTop.value,
+                bottom: dataBottom.value,
+                left: dataLeft.value,
+                right: dataRight.value,
+                thickness: dataThickness.value,
+            }
+        }
     }
     nodeStore.addNode(newNode)
 
     label.value = ''
-    type.value = 'customFilter'
-    posX.value = 100
-    posY.value = 100
 }
 </script>
 
@@ -47,9 +60,11 @@ function createNode() {
 }
 
 .form-group {
+    margin: 0 auto;
     margin-bottom: 0.5rem;
     display: flex;
     flex-direction: column;
+    max-width: 15vw;
 }
 
 .form-group label {
@@ -57,7 +72,6 @@ function createNode() {
     margin-bottom: 0.2rem;
 }
 
-.form-group select,
 .form-group input {
     padding: 0.3rem;
     border: 1px solid #ccc;
