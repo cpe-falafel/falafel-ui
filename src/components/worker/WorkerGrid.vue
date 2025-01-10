@@ -1,7 +1,7 @@
 <template>
   <div class="div-parent">
     <div v-if="isFluxEdition" class="div-header">
-      <p>Workers assignés</p>
+      <p>Linked Workers</p>
       <button class="add-btn" @click="openModal">
         <span class="material-symbols-outlined">add</span>
         <span>Add</span>
@@ -43,7 +43,9 @@
 import { ref, computed } from "vue";
 import WorkerItem from "@/components/worker/WorkerItem.vue";
 import { useWorkersStore } from "@/store/workerStore";
-import WorkerModal from '@/components/worker/WorkerModal.vue'
+import WorkerModal from '@/components/worker/WorkerModal.vue';
+import workerService from '@/services/workerService';
+
 
 export default {
   components: {
@@ -52,8 +54,12 @@ export default {
   },
   props:{
     isFluxEdition: {
-        type: Boolean,
-        required: true
+      type: Boolean,
+      required: true
+    },
+    flux:{
+      type: Object,
+      required: false
     }
   },
   setup(props, { emit }) {
@@ -72,9 +78,7 @@ export default {
     };
 
     const handleCreateWorker = (newWorker) => {
-
-      // TODO
-      //workerStore.addWorker(newWorker);
+      workerService.addWorkerAndRefreshStore(newWorker, props.flux);
       showModal.value = false;
     };
 
@@ -83,7 +87,7 @@ export default {
     };
 
     const handleDeleteWorker = (worker) => {
-      workerStore.removeWorker(worker);
+      workerService.deleteWorkerAndRefreshStore(worker.uid);
     }
 
     return {

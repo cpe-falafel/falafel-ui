@@ -1,6 +1,7 @@
 import { useFluxStore } from '../store/fluxStore';
 import { useUserStore } from '../store/userStore';
 import CreateFluxDTO from '../models/createFluxDto.js'
+import EditFluxDTO from '../models/editFluxDto.js'
 
 export default {
 
@@ -11,8 +12,8 @@ export default {
         const userStore = useUserStore();
         const fluxStore = useFluxStore();
 
-        this.loading = true;
-        this.error = null;
+        let loading = true;
+        let error = null;
 
         try {
             const groupUid = userStore.group ?? 'null';
@@ -38,18 +39,18 @@ export default {
                             
                             const singleFlux = await res.json();
                             fluxStore.addFlux(singleFlux);
-                        } catch (error) {
-                            console.error(`Error fetching details for flux UID: ${fluxSummary.uid}`, error);
-                            this.error = `Failed to fetch details for flux UID: ${fluxSummary.uid}`;
+                        } catch (e) {
+                            console.error(`Error fetching details for flux UID: ${fluxSummary.uid}`, e);
+                            error = `Failed to fetch details for flux UID: ${fluxSummary.uid}`;
                         }
                     });
                 }
             }
-        } catch (error) {
+        } catch (e) {
             this.error = 'Failed to fetch flux data';
-            console.error('Error while fetching flux data:', error);
+            console.error('Error while fetching flux data:', e);
         } finally {
-            this.loading = false;
+            loading = false;
         }
     },
 
@@ -118,4 +119,46 @@ export default {
         this.deleteFlux(uid);
         this.fetchAllFluxByGroup();
     },
+
+    /**
+     * Update a flux
+     * @param {string} flux - The flux to update
+     */
+    async updateFlux(flux) {
+        try {
+            const editFluxDTO = new EditFluxDTO(flux.name, flux.value, flux.ressourceDependencies)
+
+            const response = await fetch(`/api/flux/${flux.uid}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(editFluxDTO, null, 2),
+            });
+        
+            if (response.ok) {
+                console.log('Flux updated successfully');
+            } else if (response.status === 404) {
+                console.log('Flux not found');
+            } else {
+                throw new Error('Failed to update flux');
+            }
+        } catch (error) {
+            console.error('Failed to update flux:', error);
+        }
+    },
+
+    /**
+     * Update a flux and refresh the flux store.
+     * @param {object} flux - The flux to update
+     */
+    async updateFluxAndRefreshStore(flux){
+        this.updateFlux(flux);
+        this.fetchAllFluxByGroup();
+    },
+
+    selectFlux(fluxUid){
+        const fluxStore = useFluxStore();
+        fluxStore.selectFlux(fluxUid);
+    }
 };

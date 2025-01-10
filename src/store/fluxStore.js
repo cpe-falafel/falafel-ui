@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 export const useFluxStore = defineStore('fluxStore', {
   state: () => ({
     flux: [],
+    selectedFlux: null,
     loading: false,
     error: null,
   }),
@@ -11,7 +12,9 @@ export const useFluxStore = defineStore('fluxStore', {
     getFluxByUid: (state) => {
       return (uid) => state.flux.find(flux => flux.uid === uid);
     },
-    getAllFlux: (state) => () => state.flux
+    getAllFlux: (state) => () => state.flux,
+    getSelectedFlux: (state) => () => state.selectedFlux,
+    getAllFluxFiltered : (state) => (search) => state.flux.filter(flux => flux.name.includes(search))
   },
 
   actions: {
@@ -28,5 +31,8 @@ export const useFluxStore = defineStore('fluxStore', {
     removeFlux(flux) {
       this.flux = this.flux.filter(flux => flux.uid !== flux.uid);
     },
+    selectFlux(fluxUid){
+      this.selectedFlux = fluxUid;
+    }
   },
 });

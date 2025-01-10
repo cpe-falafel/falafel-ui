@@ -16,7 +16,7 @@ export const useWorkersStore = defineStore('workersStore', {
 
   actions: {
     addWorker(worker) {
-      if (worker instanceof Worker) {
+      if (worker) {
         this.workers.push(worker);
       } else {
         console.error('Invalid worker object');

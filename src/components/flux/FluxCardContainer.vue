@@ -1,6 +1,11 @@
 <template>
-    <div v-if="fluxList.length > 0" class="div-not-empty">
+    <div v-if="fluxList.length > 0 || search !== undefined" class="div-not-empty">
         <div class="div-not-empty-header"> 
+            <input
+                type="text"
+                v-model="search"
+                placeholder="Name"
+            />
             <button @click="openFluxCreationModal()">add</button>
         </div>
         <div class="div-grid">
@@ -11,7 +16,7 @@
 
     
     <div class="div-empty">
-        <div v-if="fluxList.length === 0" class="div-not-found">
+        <div v-if="fluxList.length === 0 && search === undefined" class="div-not-found">
             <div class="div-flex">
                 <span class="material-symbols-outlined not-found">error</span>
                 <span>No flux was found.</span>
@@ -45,8 +50,9 @@ export default {
         FluxModal
     },
     setup(props, { emit }) {
+        const search = ref("")
         const fluxStore = useFluxStore();
-        const fluxList = computed(() => fluxStore.getAllFlux());
+        const fluxList = computed(() => fluxStore.getAllFluxFiltered(search.value));
 
         const router = useRouter();
         const goToEditor = (flux) => {
@@ -79,6 +85,7 @@ export default {
         };
 
         return {
+            search,
             fluxList,
             goToEditor,
             deleteFlux,
@@ -96,7 +103,8 @@ export default {
 .div-not-empty-header{
     height: 10%;
     padding: 2%;
-    text-align: end;
+    display: flex;
+    justify-content: space-between;
 }
 
 .div-not-empty{
@@ -118,7 +126,6 @@ export default {
     padding-bottom: 2%;
     grid-template-columns: repeat(2, 1fr);
     justify-items: center; 
-    align-items: center;
     row-gap: 20px
 }
 
@@ -156,6 +163,28 @@ export default {
 
 .not-found{
     margin-right: 1%;
+}
+
+
+.div-not-empty-header input[type="text"] {
+  width: 50%;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: none; 
+  border-bottom: 3px solid #000000; 
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  outline: none;
+  background-color: transparent;
+  color: black;
+}
+
+.div-not-empty-header input:disabled {
+    background-color: rgb(180, 180, 180);
+}
+
+.div-not-empty-header input:focus {
+    border-bottom: 3px solid #555;
 }
 </style>
 

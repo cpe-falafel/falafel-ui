@@ -1,64 +1,58 @@
-<script setup>
-import {onMounted, ref} from "vue";
-import {serializeStore} from "@/services/serialGraphService.js";
-import {useNodeStore} from "@/store/useNodeStore.js";
-
-let msg = ref("");
-let active = ref(false)
-
-function showNotification(message){
-  msg.value = message;
-  active.value = true;
-  setTimeout(() => active.value = false, 1000);
-}
-
-const store = useNodeStore();
-
-function save(){
-  console.log(serializeStore({nodes: store.nodes, edges: store.edges}));
-  showNotification("Saved!");
-}
-
-onMounted(() => {
-  document.addEventListener('keydown', function(event) {
-    if ((event.ctrlKey || event.metaKey) && event.key === 's') {
-      event.preventDefault();
-      save();
-    }
-  });
-});
-
-</script>
-
 <template>
-  <div class="save-notification-container">
-    <p :class="active? 'notification-active':''" >{{ msg }}</p>
+  <div class="save-notification-container" :class="{'active' : active}">
+    <p>Saved</p>
+    <span class="material-symbols-outlined check-circle">check_circle</span>
   </div>
 </template>
 
+<script>
+import { ref } from "vue";
+
+export default {
+  setup(_, { expose }) {
+    const active = ref(false);
+
+    function showNotification() {
+      active.value = true;
+      setTimeout(() => (active.value = false), 1000);
+    }
+
+    function save() {
+      showNotification();
+    }
+
+    expose({ save });
+
+    return { active };
+  },
+};
+</script>
+
 <style>
-  .save-notification-container{
-    height: 2em;
-    overflow-y: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+.save-notification-container {
+  height: 2em;
+  overflow-y: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  background-color: white;
+  width: 15vh;
+  margin: auto;
+  border-radius: 25px;
+  color: black;
+  transform: translateY(-2em);
+  transition: transform 0.2s ease-in-out; 
+  opacity: 0;
+  margin-top: 2%;
+}
 
-  .save-notification-container > p{
-    transform: translateY(-2em);
-    margin: 0.1em;
-    text-align: center;
-    width: fit-content;
-    background: lightgreen;
-    border: solid 1px green;
-  }
+.check-circle {
+  color: green;
+}
 
-  .save-notification-container > p.notification-active{
-    transition: 0.1s ease-in-out;
-    transform: translateY(0);
-
-  }
-
-
+.save-notification-container.active {
+  transform: translateY(0); 
+  opacity: 1;
+}
 </style>

@@ -1,7 +1,10 @@
 <template>
     <div class="div-item">
+        <p>{{worker.uid}}</p>
         <p>{{worker.uri}}</p>
-        <p>{{worker.apiKey}}</p>
+        <!-- <span v-if="IsSync" class="material-symbols-outlined sync">sync</span>
+        <span v-if="!IsSync" class="material-symbols-outlined not-sync">sync_disabled</span>
+        <span v-if="isLinkedToFlux" class="material-symbols-outlined star">star</span> -->
         <div class="div-btn" @click="deleteWorker()">
             <span class="material-symbols-outlined">delete</span>
         </div>
@@ -9,7 +12,9 @@
 </template>
 
 <script>
-import Worker from "@/models/worker";
+import Worker from "@/models/Worker";
+import { computed } from 'vue';
+import { useFluxStore } from "@/store/fluxStore";
 
 export default {
   props: {
@@ -23,12 +28,30 @@ export default {
     },
   },
   setup(props, { emit }) {
+    const fluxStore = useFluxStore();
+    const selectedFlux = computed(() => fluxStore.getFluxByUid(fluxStore.getSelectedFlux()));
+   
+    const isLinkedToFlux = () =>{
+      return selectedFlux !== null && selectedFlux.uid === this.worker.lastFluxUid;
+    }
+
+    const isSync = () => {
+      return isLinkedToFlux() && this.worker.configurationValue === selectedFlux.value;
+    }
+
     const deleteWorker = () => {
       emit('worker:delete' , props.worker);
     }
 
+    const commit = () => {
+      emit('worker:commit' , );
+    }
+
     return {
-      deleteWorker
+      deleteWorker,
+      fluxStore,
+      isLinkedToFlux,
+      isSync
     }
   }
 };
@@ -46,5 +69,16 @@ export default {
     padding: 2%;
     margin: 1%;
     border-radius: 6px;
+}
+.sync {
+  color: green;
+}
+
+.not-sync{
+  color: red;
+}
+
+.star{
+  color: yellow;
 }
 </style>

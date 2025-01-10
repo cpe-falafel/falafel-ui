@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card__header">
       <h3 class="card__title">{{ flux.name }}</h3>
-      <span class="card__status" :class="statusClass">{{ flux.status }}</span>
+      <!--<span class="card__status" :class="statusClass">{{ flux.status }}</span>-->
     </div>
     <div class="div-flex">
       <div class="card__body div-desc">
