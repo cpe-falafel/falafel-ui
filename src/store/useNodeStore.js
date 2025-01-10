@@ -68,7 +68,6 @@ export const useNodeStore = defineStore("flow", {
 
     updateNodesPositions(nodeChanges) {
       for (let {id, position} of nodeChanges) {
-        debugger;
         const idx = this.nodes.findIndex(n => n.id === id);
         if (idx === -1) continue;
         this.nodes[idx].position = position;
@@ -92,7 +91,6 @@ export const useNodeStore = defineStore("flow", {
       }
     },
     updateSelectedNodeProperties(props) {
-      debugger;
       if (!this.selectedNode) return null;
       const idx = this.nodes.findIndex((n) => n.id === this.selectedNode.id);
       this.selectedNode = {...this.selectedNode, data:{...this.selectedNode.data, properties: props}};

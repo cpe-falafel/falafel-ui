@@ -59,7 +59,6 @@ function onNodesSelected(nodesSelected) {
 }
 
 function onUpdateGraph() {
-    debugger;
     nodeStore.updateGraph(nodeStore.nodes, nodeStore.edges)
 }
 
