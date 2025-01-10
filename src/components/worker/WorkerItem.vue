@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import Worker from "@/models/Worker";
+import Worker from "@/models/worker";
 import { computed } from 'vue';
 import { useFluxStore } from "@/store/fluxStore";
 
