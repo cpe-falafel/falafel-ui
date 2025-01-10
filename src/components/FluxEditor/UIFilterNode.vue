@@ -1,6 +1,6 @@
 <template>
   <div class="node-item__header">
-    {{ data.label }}
+    {{ data.properties._label ?? "Untitled" }}
   </div>
   <div class="node-item__body" :style="{ maxWidth: '200px' }">
     Paramètre: {{ data.properties || '—' }}
