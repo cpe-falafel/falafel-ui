@@ -13,7 +13,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import SaveNotification from "@/components/FluxEditor/SaveNotification.vue";
-
 const previewUrl = ref(null)
 
 onMounted(() => {

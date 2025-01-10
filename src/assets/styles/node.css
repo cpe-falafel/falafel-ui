@@ -25,20 +25,7 @@
   background-color: #f3f4f6;
 }
 
-.vue-flow__node-customInput {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px #0003;
-}
-
-.vue-flow__node-customInput.selected {
-  box-shadow: 0 0 0 2px #ec4899;
-}
-
-.vue-flow__node-customInput input {
+[class*="vue-flow__node-"] input {
   flex: 1;
   padding: 8px;
   border: none;
@@ -46,17 +33,7 @@
   box-shadow: 0 0 10px #0000001a;
 }
 
-.vue-flow__node-customInput input:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px #ec4899;
-  transition: box-shadow 0.2s;
-}
-
-.vue-flow__node-customInput .vue-flow__handle {
-  background-color: #ec4899;
-}
-
-.vue-flow__node-customFilter {
+[class*="vue-flow__node-"] {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -66,16 +43,12 @@
   box-shadow: 0 0 10px #0003;
 }
 
-.vue-flow__node-customFilter.selected {
-  box-shadow: 0 0 0 2px #2563eb;
-}
-
-.vue-flow__node-customFilter .buttons {
+[class*="vue-flow__node-"] .buttons {
   display: flex;
   gap: 8px;
 }
 
-.vue-flow__node-customFilter button {
+[class*="vue-flow__node-"] button {
   border: none;
   cursor: pointer;
   background-color: #4a5568;
@@ -90,46 +63,33 @@
   justify-content: center;
 }
 
-.vue-flow__node-customFilter button svg {
+[class*="vue-flow__node-"] button svg {
   width: 100%;
   height: 100%;
 }
 
-.vue-flow__node-customFilter button:hover {
-  background-color: #2563eb;
-  transition: background-color 0.2s;
-}
-
-.vue-flow__node-customFilter button.selected {
-  background-color: #2563eb;
+.vue-flow__node-customFilter.selected {
+  box-shadow: 0 0 0 2px #2563eb;
 }
 
 .vue-flow__node-customFilter .vue-flow__handle {
   background-color: #2563eb;
 }
 
-.vue-flow__node-customOutput {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 16px 24px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px #0003;
+[class*="vue-flow__node-"]:has(> .type-_IN).selected {
+  box-shadow: 0 0 0 2px #ec4899;
 }
 
-.vue-flow__node-customOutput.selected {
+[class*="vue-flow__node-"]:has(> .type-_IN) .vue-flow__handle {
+  background-color: #ec4899;
+}
+
+[class*="vue-flow__node-"]:has(> .type-_OUT).selected {
   box-shadow: 0 0 0 2px #5ec697;
 }
 
-.vue-flow__node-customOutput .vue-flow__handle {
+[class*="vue-flow__node-"]:has(> .type-_OUT) .vue-flow__handle {
   background-color: #5ec697;
-}
-
-.vue-flow__node-customOutput .customOutput {
-  display: flex;
-  gap: 8px;
-  font-size: 24px;
 }
 
 input::-webkit-outer-spin-button,

@@ -30,20 +30,17 @@
           </button>
         </div>
         <div class="edit-grid">
+          <h2>Flux Edition ({{ flux.name }})</h2>
           <NodeEditForm
             v-if="nodeStore.selectedNode"
             :node="nodeStore.selectedNode"
             @updateNode="updateNodeData"
           />
-          <NodeAddForm v-else @addNode="addNode" />
         </div>
         <div class="canvas-grid">
           <div class="canvas">
-            <NodeCanvas
-              @nodeSelected="handleNodeSelected"
-              @graphUpdated="handleGraphUpdated"
-              @addNode="handleAddNodeFromCanvas"
-            />
+            <NodeCanvas @nodeSelected="handleNodeSelected" @graphUpdated="handleGraphUpdated"
+              @addNode="handleAddNodeFromCanvas" />
           </div>
         </div>
       </div>
@@ -62,12 +59,15 @@ import NodeAddForm from "@/components/FluxEditor/FluxEditorNodeAddForm.vue";
 import { useNodeStore } from "@/store/useNodeStore";
 import PreviewEditor from "@/components/FluxEditor/FluxEditorPreview.vue";
 import WorkerGrid from "@/components/worker/WorkerGrid.vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useFluxStore } from "@/store/fluxStore";
+<<<<<<< HEAD
 import { useRouter } from "vue-router";
 import SaveNotification from '@/components/FluxEditor/SaveNotification.vue'
 import { serializeStore } from "@/services/serialGraphService.js";
 import fluxService from '../services/fluxService';
+=======
+>>>>>>> main
 
 export default {
   components: {
@@ -272,7 +272,6 @@ input:focus {
   flex-direction: column;
   gap: 2.5vh;
   min-width: 40vw;
-  gap: 2.5vh;
 }
 
 .editor-layout-right {
@@ -287,6 +286,7 @@ input:focus {
   height: 40vh;
   background-color: #f7f7f7;
 }
+
 .worker-grid {
   background-color: #f7f7f7;
   border: 1px solid #ddd;
@@ -299,9 +299,13 @@ input:focus {
   padding-left: 4%;
   padding-right: 4%;
   display: flex;
+<<<<<<< HEAD
   justify-content: space-between;
   align-content: center;
   height: 11vh;
+=======
+  min-height: 55vh;
+>>>>>>> main
 }
 
 .edit-grid {

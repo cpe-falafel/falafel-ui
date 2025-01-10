@@ -1,11 +1,12 @@
 <template>
     <div class="node-canvas">
-        <VueFlow class="flow-container interaction-flow" v-model:nodes="nodes" v-model:edges="edges"
-            :node-types="nodeStore.nodeTypes" :fit-view="true" :defaultEdgeOptions="defaultEdgeOptions"
-            @nodeDoubleClick="onNodeDoubleClick" @nodesSelected="onNodesSelected" @update="onUpdateGraph"
-            @edge-click="onEdgeClick" @pane-click="onPaneClick">
+        <VueFlow class="flow-container" :nodes="nodes" :edges="edges" :node-types="nodeStore.nodeTypes"
+            :fit-view="true" :defaultEdgeOptions="defaultEdgeOptions" @nodeDoubleClick="onNodeDoubleClick"
+            @nodesSelected="onNodesSelected" @update="onUpdateGraph" @edge-click="onEdgeClick"
+            @pane-click="onPaneClick" @nodesChange="nodesChange"  @update:edges="updateEdges" >
 
             <template #node-customFilter="props">
+                <span :class="'type-' + props.data.type"></span>
                 <UIFilterNode :id="props.id" :data="props.data" />
             </template>
 
@@ -15,7 +16,7 @@
 </template>
 
 <script setup>
-import {computed, onMounted} from 'vue'
+import { computed, onMounted } from 'vue'
 import { VueFlow, useVueFlow, MarkerType } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import { useNodeStore } from '@/store/useNodeStore'
@@ -27,8 +28,8 @@ const nodeStore = useNodeStore()
 const { onConnect, addEdges, fitView } = useVueFlow();
 
 onMounted(() => {
-  nodeStore.optimizeNodePositions();
-  fitView();
+    nodeStore.optimizeNodePositions();
+    fitView();
 });
 
 const defaultEdgeOptions = {
@@ -39,7 +40,7 @@ const defaultEdgeOptions = {
 };
 
 function onNodeDoubleClick(_evt) {
-    if(_evt.node.type == "customFilter"){
+    if (_evt.node.type === "customFilter") {
         nodeStore.setSelectedNode(_evt.node)
     }
 }
@@ -61,6 +62,15 @@ function onNodesSelected(nodesSelected) {
 function onUpdateGraph() {
     nodeStore.updateGraph(nodeStore.nodes, nodeStore.edges)
 }
+
+function nodesChange(changes){
+  nodeStore.updateNodesPositions(changes.filter(c => c.type=== 'position' && c.id && c.position));
+}
+
+function updateEdges(edges){
+  nodeStore.updateEdges(edges);
+}
+
 
 onConnect((connection) => {
     addEdges(connection)
