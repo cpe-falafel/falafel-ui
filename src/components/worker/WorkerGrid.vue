@@ -44,7 +44,8 @@ import { ref, computed } from "vue";
 import WorkerItem from "@/components/worker/WorkerItem.vue";
 import { useWorkersStore } from "@/store/workerStore";
 import WorkerModal from '@/components/worker/WorkerModal.vue';
-import workerService from '@/services/workerService'
+import workerService from '@/services/workerService';
+
 
 export default {
   components: {
@@ -86,7 +87,9 @@ export default {
     };
 
     const handleDeleteWorker = (worker) => {
-      workerStore.removeWorker(worker);
+      //workerStore.removeWorker(worker);
+
+      //todo
     }
 
     return {

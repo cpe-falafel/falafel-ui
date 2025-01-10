@@ -24,7 +24,7 @@
             /> 
             <span class="material-symbols-outlined title-edit-btn" @click="toggleEditingTitle">check</span>
           </div>
-          <button v-if="!isEditingTitle" class="save-btn" @click="openModal">
+          <button v-if="!isEditingTitle" class="save-btn" @click="save">
             <span class="material-symbols-outlined save-btn-logo">save</span>
             <span>Save</span>
           </button>
@@ -48,11 +48,14 @@
         </div>
       </div>
     </div>
+    <div class="notification-abs"> 
+      <SaveNotification ref="saveNotifyer"/>
+    </div>
   </div>
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import NodeCanvas from "@/components/FluxEditor/FluxEditorNodeCanvas.vue";
 import NodeEditForm from "@/components/FluxEditor/FluxEditorNodeEditForm.vue";
 import NodeAddForm from "@/components/FluxEditor/FluxEditorNodeAddForm.vue";
@@ -62,6 +65,9 @@ import WorkerGrid from "@/components/worker/WorkerGrid.vue";
 import { useRoute } from "vue-router";
 import { useFluxStore } from "@/store/fluxStore";
 import { useRouter } from "vue-router";
+import SaveNotification from '@/components/FluxEditor/SaveNotification.vue'
+import { serializeStore } from "@/services/serialGraphService.js";
+import fluxService from '../services/fluxService';
 
 export default {
   components: {
@@ -70,21 +76,60 @@ export default {
     NodeEditForm,
     NodeCanvas,
     NodeAddForm,
+    SaveNotification
   },
   setup(props, { emit }) {
-    // Access route parameters
+
+    /* Stores */
+    const nodeStore = useNodeStore();
+    const fluxStore = useFluxStore();
+
+    /* Router */
     const route = useRoute();
     const router = useRouter();
+
+    /* Url params check */
     const fluxUid = route.query.uid;
     if (!fluxUid) {
       router.replace("/");
+    }else{
+      fluxService.selectFlux(fluxUid);
     }
 
-    const fluxStore = useFluxStore();
+    /* Variables */
     const flux = computed(() => fluxStore.getFluxByUid(fluxUid));
-
-    const nodeStore = useNodeStore();
+    const isEditingTitle = ref(false);
+    const saveNotifyer = ref(null);
     const selectedNode = ref(null);
+
+    /* Ctrl+s listener */
+    onMounted(() => {
+      document.addEventListener("keydown", function (event) {
+        if ((event.ctrlKey || event.metaKey) && event.key === "s") {
+          event.preventDefault();
+          save();
+        }
+      });
+    });
+
+    /* Methods */
+    const toggleEditingTitle = () => {
+      isEditingTitle.value = ! isEditingTitle.value;
+    }
+
+    const saveNotify = () => {
+      if (saveNotifyer.value) {
+        saveNotifyer.value.save();
+      }
+    }
+
+    const save = () =>{
+      const newValue = serializeStore({ nodes: nodeStore.nodes, edges: nodeStore.edges });
+      flux.value.value = newValue;
+      fluxService.updateFluxAndRefreshStore(flux.value);
+      saveNotify();
+    }
+
     const handleNodeSelected = (node) => {
       selectedNode.value = node;
     };
@@ -114,11 +159,6 @@ export default {
       alert("Configuration du flux envoyée au worker !");
     };
 
-    const isEditingTitle = ref(false);
-    const toggleEditingTitle = () => {
-      isEditingTitle.value = ! isEditingTitle.value;
-    }
-
     return {
       handleNodeSelected,
       handleGraphUpdated,
@@ -130,7 +170,9 @@ export default {
       nodeStore,
       flux,
       isEditingTitle,
-      toggleEditingTitle
+      toggleEditingTitle,
+      saveNotifyer,
+      save
     };
   },
 };
@@ -154,7 +196,7 @@ export default {
   width: 100%;
 }
 
-.div-title-editing input[type="text"] {
+input[type="text"] {
     width: 50%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -169,11 +211,11 @@ export default {
     font-size: 120%;
 }
 
-.div-title-editing input:disabled {
+input:disabled {
     background-color: rgb(180, 180, 180);
 }
 
-.div-title-editing input:focus {
+input:focus {
     border: 3px solid #555;
 }
 
@@ -243,6 +285,7 @@ export default {
 
 .preview-grid {
   height: 40vh;
+  background-color: #f7f7f7;
 }
 .worker-grid {
   background-color: #f7f7f7;
@@ -283,5 +326,15 @@ export default {
   display: flex;
   gap: 1rem;
   justify-content: flex-end;
+}
+
+.notification-abs{
+  z-index: 1000;
+  position: absolute;
+  top: 70px;
+  width: 100%;
+  height: 300px;
+  left: 0px;
+  pointer-events: none;
 }
 </style>

@@ -17,7 +17,7 @@ export default {
         try {
             const groupUid = userStore.group ?? 'null';
 
-            const response = await fetch(`api/worker?group=${groupUid}`);
+            const response = await fetch(`api/workers?group=${groupUid}`);
 
             if (!(response.ok || response.status === 404)){
                 throw new Error('Error fetching worker data for the group');
@@ -27,10 +27,10 @@ export default {
 
             if (response.ok){
                 const workers = await response.json();
-                if (Array.isArray(workers) && workers.length > 0) {
-                    workers.forEach(async (workerSummary) => {
+                if (Array.isArray(workers.values) && workers.values.length > 0) {
+                    workers.values.forEach(async (workerSummary) => {
                         try {
-                            const res = await fetch(`api/worker/${workerSummary.uid}`);
+                            const res = await fetch(`api/workers/${workerSummary.uid}`);
                             
                             if (!res.ok) {
                                 throw new Error(`Error fetching worker with UID: ${workerSummary.uid}`);
@@ -62,7 +62,7 @@ export default {
         try {
             const createWorkerDTO = new CreateWorkerDTO(flux.owner, flux.value, worker.uri, worker.apiKey, flux.uid);
 
-            const response = await fetch('/api/worker', {
+            const response = await fetch('/api/workers', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ export default {
      * @param {Object} flux - The worker linked
      */
     async addWorkerAndRefreshStore(worker, flux){
-        //await this.addWorker(worker, flux);
+        await this.addWorker(worker, flux);
         await this.fetchAllWorkerByGroup();
     },
 
@@ -96,7 +96,7 @@ export default {
      */
     async deleteWorker(uid) {
         try {
-            const response = await fetch(`/api/worker/${uid}`, {
+            const response = await fetch(`/api/workers/${uid}`, {
                 method: 'DELETE',
             });
         
@@ -118,6 +118,39 @@ export default {
      */
     async deleteWorkerAndRefreshStore(uid){
         this.deleteWorker(uid);
+        this.fetchAllWorkerByGroup();
+    },
+
+    /**
+     * Commit a flux in a worker and refresh the worker store.
+     * @param {string} workerUid - The UID of the worker
+     * @param {string} fluxUid - The UID of the flux
+     */
+    async commit(workerUid, fluxUid){
+        try {
+            const response = await fetch(`/api/workers/${workerUid}/flux/${fluxUid}`, {
+                method: 'PUT',
+            });
+        
+            if (response.ok) {
+                console.log(`Flux (${fluxUid}) has been commited successfully in Worker (${workerUid})`);
+            } else if (response.status === 404) {
+                console.log('Worker not found');
+            } else {
+                throw new Error(`Failed to commit Flux (${fluxUid}) in  Worker (${workerUid})`);
+            }
+        } catch (e) {
+            console.error('Failed to commit worker:', e);
+        } 
+    },
+        
+    /**
+     * Commit a flux in a worker and refresh the worker store.
+     * @param {string} workerUid - The UID of the worker
+     * @param {string} fluxUid - The UID of the flux
+     */
+    async commitAndRefreshStore(workerUid, fluxUid){
+        this.commit(workerUid, fluxUid);
         this.fetchAllWorkerByGroup();
     },
 };

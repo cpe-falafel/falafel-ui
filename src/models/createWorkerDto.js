@@ -1,13 +1,13 @@
 export default class CreateWorkerDTO {
     constructor(
-      groupUid,
+      group,
       configurationValue,
       uri,
       apiKey,
       lastFluxUid,
     ) {
       this.lastFluxUid = lastFluxUid;
-      this.groupUid = groupUid;
+      this.group = group;
       this.configurationValue = configurationValue;
       this.uri = uri;
       this.apiKey = apiKey;

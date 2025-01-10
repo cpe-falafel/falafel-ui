@@ -133,18 +133,18 @@ export default {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(editFluxDTO),
+                body: JSON.stringify(editFluxDTO, null, 2),
             });
         
             if (response.ok) {
-                console.log('Flux deleted successfully');
+                console.log('Flux updated successfully');
             } else if (response.status === 404) {
                 console.log('Flux not found');
             } else {
-                throw new Error('Failed to delete flux');
+                throw new Error('Failed to update flux');
             }
         } catch (error) {
-            console.error('Failed to remove flux:', error);
+            console.error('Failed to update flux:', error);
         }
     },
 
@@ -156,4 +156,9 @@ export default {
         this.updateFlux(flux);
         this.fetchAllFluxByGroup();
     },
+
+    selectFlux(fluxUid){
+        const fluxStore = useFluxStore();
+        fluxStore.selectFlux(fluxUid);
+    }
 };
