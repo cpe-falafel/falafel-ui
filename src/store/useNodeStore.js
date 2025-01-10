@@ -60,7 +60,6 @@ export const useNodeStore = defineStore("flow", {
   actions: {
     setSelectedNode(node) {
       this.selectedNode = node;
-      window.loadConf = (s) => this.loadConf(s);
     },
 
     updateGraph(nodes, edges) {
@@ -112,6 +111,7 @@ export const useNodeStore = defineStore("flow", {
       const {nodes, edges} = storeFromSerialGraph(conf);
       this.nodes = nodes;
       this.edges = edges;
+      this.optimizeNodePositions();
     }
   },
 

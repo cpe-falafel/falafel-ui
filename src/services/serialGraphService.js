@@ -112,7 +112,6 @@ export function storeFromSerialGraph(confValue){
             }
         };
     });
-    debugger;
     const edgesForStore = Object.entries(edges).filter(([_,e]) => e.src && e.dst).map(([k, edge]) => ({
         id: k,
         source: edge.src[0],
