@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
-import { MarkerType } from "@vue-flow/core";
+import {defineStore} from "pinia";
+import {MarkerType} from "@vue-flow/core";
 import {optimizeNodePosition} from "@/utils/graphPosUtils.js";
 
 export const useNodeStore = defineStore("flow", {
@@ -9,19 +9,20 @@ export const useNodeStore = defineStore("flow", {
         id: "1",
         type: "customFilter",
         position: { x: 50, y: 50 },
-        data: { label: "Entrée", type: "_IN", properties: {src:""} },
+        data: { type: "_IN", properties: {_label: "Entrée",src:""} },
       },
       {
         id: "2",
         type: "customFilter",
         position: { x: 550, y: 50 },
-        data: { label: "Sortie", type: "_OUT", properties: {dst:""} },
+        data: { type: "_OUT", properties: {_label: "Sortie", dst:""} },
       },
       {
         id: "3",
         type: "customFilter",
         position: { x: 300, y: 50 },
-        data: { label: "Ajout Cadre", type: "drawbox", properties: {
+        data: { type: "drawbox", properties: {
+          _label: "Ajout Cadre",
           color: "#000000",
           top: 0,
           bottom: 0,
@@ -65,6 +66,20 @@ export const useNodeStore = defineStore("flow", {
       this.edges = edges;
     },
 
+    updateNodesPositions(nodeChanges) {
+      for (let {id, position} of nodeChanges) {
+        debugger;
+        const idx = this.nodes.findIndex(n => n.id === id);
+        if (idx === -1) continue;
+        this.nodes[idx].position = position;
+      }
+      this.nodes = [...this.nodes];
+    },
+
+    updateEdges(edges) {
+      this.edges = edges;
+    },
+
     addNode(newNode) {
       this.nodes.push(newNode);
     },
@@ -73,6 +88,16 @@ export const useNodeStore = defineStore("flow", {
       const idx = this.nodes.findIndex((n) => n.id === updatedNode.id);
       if (idx !== -1) {
         this.nodes[idx] = updatedNode;
+        this.nodes = [...this.nodes];
+      }
+    },
+    updateSelectedNodeProperties(props) {
+      debugger;
+      if (!this.selectedNode) return null;
+      const idx = this.nodes.findIndex((n) => n.id === this.selectedNode.id);
+      this.selectedNode = {...this.selectedNode, data:{...this.selectedNode.data, properties: props}};
+      if (idx !== -1) {
+        this.nodes[idx].data.properties = props;
         this.nodes = [...this.nodes];
       }
     },

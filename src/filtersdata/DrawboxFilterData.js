@@ -2,7 +2,7 @@ export const DrawboxFilterData = {
     proto: [
         {
             label: "Nom",
-            key: "label",
+            key: "_label",
             type: "string"
         },
         {
