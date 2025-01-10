@@ -1,20 +1,20 @@
 <template>
     <div class="form-group">
         <label>{{ props.label }} :</label>
-        <div v-if="props.type == 'color'">
+        <div v-if="props.type === 'color'">
             <Vue3ColorPicker class="color-picker" @update:modelValue="sendValue" mode="solid" :showColorList="false"
-                :showEyeDrop="false" type="HEX" :showInputMenu="false" :showPickerMode="false" />
+                :showEyeDrop="false" type="HEX" :showInputMenu="false" :showPickerMode="false" :model-value="props.data.value" />
         </div>
-        <div v-if="props.type == 'uint'">
+        <div v-if="props.type === 'uint'">
             <vue-number-input @update:modelValue="sendValue" :model-value="0" :min="0" inline center controls
-                onkeydown="return event.keyCode !== 69"></vue-number-input>
+                onkeydown="return event.keyCode !== 69" :value="props.data.value" ></vue-number-input>
         </div>
-        <div v-if="props.type == 'uint1'">
+        <div v-if="props.type === 'uint1'">
             <vue-number-input @update:modelValue="sendValue" :model-value="0" :min="1" inline center controls
-                onkeydown="return event.keyCode !== 69"></vue-number-input>
+                onkeydown="return event.keyCode !== 69" :value="props.data.value" ></vue-number-input>
         </div>
-        <div v-if="props.type == 'string'">
-            <input @change="sendValue" />
+        <div v-if="props.type === 'string'">
+            <input @input="(evt) => sendValue(evt.target.value)" :value="props.data.value"/>
         </div>
     </div>
 </template>
@@ -30,15 +30,19 @@ const props = defineProps({
     type: {
         type: String,
         required: true
+    },
+    data: {
+        type: Object,
+        required: true
     }
 })
 
 const emit = defineEmits([
-    "change"
+    "changeVal"
 ]);
 
 function sendValue(val) {
-    emit("change", val)
+  emit("changeVal", val)
 }
 </script>
 
