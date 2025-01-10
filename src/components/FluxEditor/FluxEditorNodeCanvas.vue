@@ -3,7 +3,7 @@
         <VueFlow class="flow-container" :nodes="nodes" :edges="edges" :node-types="nodeStore.nodeTypes"
             :fit-view="true" :defaultEdgeOptions="defaultEdgeOptions" @nodeDoubleClick="onNodeDoubleClick"
             @nodesSelected="onNodesSelected" @update="onUpdateGraph" @edge-click="onEdgeClick"
-            @pane-click="onPaneClick">
+            @pane-click="onPaneClick" @nodesChange="nodesChange"  @update:edges="updateEdges" >
 
             <template #node-customFilter="props">
                 <UIFilterNode :id="props.id" :data="props.data" />
@@ -39,7 +39,7 @@ const defaultEdgeOptions = {
 };
 
 function onNodeDoubleClick(_evt) {
-    if (_evt.node.type == "customFilter") {
+    if (_evt.node.type === "customFilter") {
         nodeStore.setSelectedNode(_evt.node)
     }
 }
@@ -61,6 +61,15 @@ function onNodesSelected(nodesSelected) {
 function onUpdateGraph() {
     nodeStore.updateGraph(nodeStore.nodes, nodeStore.edges)
 }
+
+function nodesChange(changes){
+  nodeStore.updateNodesPositions(changes.filter(c => c.type=== 'position' && c.id && c.position));
+}
+
+function updateEdges(edges){
+  nodeStore.updateEdges(edges);
+}
+
 
 onConnect((connection) => {
     addEdges(connection)
