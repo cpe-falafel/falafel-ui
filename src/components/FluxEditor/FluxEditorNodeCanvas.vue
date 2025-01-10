@@ -6,6 +6,7 @@
             @pane-click="onPaneClick" @nodesChange="nodesChange"  @update:edges="updateEdges" >
 
             <template #node-customFilter="props">
+                <span :class="'type-' + props.data.type"></span>
                 <UIFilterNode :id="props.id" :data="props.data" />
             </template>
 
