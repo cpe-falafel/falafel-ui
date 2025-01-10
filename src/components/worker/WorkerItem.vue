@@ -5,6 +5,8 @@
         <!-- <span v-if="IsSync" class="material-symbols-outlined sync">sync</span>
         <span v-if="!IsSync" class="material-symbols-outlined not-sync">sync_disabled</span>
         <span v-if="isLinkedToFlux" class="material-symbols-outlined star">star</span> -->
+        <button v-if="selectedFlux != null" @click="commit">Commit</button>
+
         <div class="div-btn" @click="deleteWorker()">
             <span class="material-symbols-outlined">delete</span>
         </div>
@@ -44,14 +46,16 @@ export default {
     }
 
     const commit = () => {
-      emit('worker:commit' , );
+      emit('commit', {workerUid : props.worker.uid, fluxUid: fluxStore.getSelectedFlux() });
     }
 
     return {
       deleteWorker,
       fluxStore,
       isLinkedToFlux,
-      isSync
+      isSync,
+      commit,
+      selectedFlux
     }
   }
 };

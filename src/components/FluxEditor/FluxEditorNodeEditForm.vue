@@ -52,5 +52,7 @@ watchEffect(() => {
     max-width: 50vw;
     padding: 1rem;
     border-radius: 6px;
+    height: 50%;
+    overflow-y: scroll;
 }
 </style>

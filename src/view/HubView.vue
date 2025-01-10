@@ -41,6 +41,7 @@ export default {
   setup(props, { emit }) {
     const fluxStore = useFluxStore();
     const fluxList = computed(() => fluxStore.getAllFlux());
+    fluxStore.selectFlux(null)
 
     const workerStore = useWorkersStore();
     const workerList = computed(() => workerStore.getAllWorkers());

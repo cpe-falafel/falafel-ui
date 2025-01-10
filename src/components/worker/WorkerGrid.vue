@@ -12,6 +12,7 @@
       <WorkerItem
         v-for="(worker, index) in this.workers"
         @worker:delete="handleDeleteWorker"
+        @commit="handleCommit"
         :key="index"
         :worker="worker"
         :index="index"
@@ -82,6 +83,10 @@ export default {
       showModal.value = false;
     };
 
+    const handleCommit = (object) =>{
+      workerService.commitAndRefreshStore(object.workerUid, object.fluxUid);
+    }
+
     const handleCancel = () => {
         showModal.value = false;
     };
@@ -97,7 +102,8 @@ export default {
       openModal,
       handleCancel,
       handleCreateWorker,
-      handleDeleteWorker
+      handleDeleteWorker,
+      handleCommit
     };
   },
 };
