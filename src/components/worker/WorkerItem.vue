@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Worker from "@/models/Worker";
+import Worker from "@/models/worker";
 
 export default {
   props: {
