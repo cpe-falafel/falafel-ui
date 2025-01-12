@@ -1,12 +1,14 @@
 <template>
-    <div v-if="fluxList.length > 0 || search !== undefined" class="div-not-empty">
-        <div class="div-not-empty-header"> 
-            <input
-                type="text"
-                v-model="search"
-                placeholder="Name"
-            />
-            <button @click="openFluxCreationModal()">add</button>
+    <div v-if="fluxList.length > 0 || search !== undefined" class="flux-card-container">
+        <div class="flux-card-container-header">
+
+          <div class="styled-input-div">
+            <input type="text" class="styled-input" placeholder="Search" v-model="search">
+            <div class="underline"></div>
+          </div>
+
+
+          <button class="btn-add-flux" @click="openFluxCreationModal()">Add Flux</button>
         </div>
         <div class="div-grid">
             <FluxCard v-for="flux in fluxList" :key="flux.uid" :flux="flux" 
@@ -80,8 +82,11 @@ export default {
         };
 
         const handleCreateEdit = async (newFlux) => {
-            const savedFlux = await fluxService.addFluxAndRefreshStore(newFlux);
-            router.replace('/flux-editor?uid='+ savedFlux.uid);
+          let savedFlux = await fluxService.addFlux(newFlux);
+          if (savedFlux){
+            await router.replace('/flux-editor?uid=' + savedFlux.uid);
+          }
+          await fluxService.fetchAllFluxByGroup();
         };
 
         return {
@@ -100,33 +105,97 @@ export default {
 </script>
 
 <style scoped>
-.div-not-empty-header{
-    height: 10%;
-    padding: 2%;
+
+.flux-card-container{
+  height: 100%;
+  max-height: 100%;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.flux-card-container-header{
+    height: 5%;
+    padding: 4%;
     display: flex;
     justify-content: space-between;
 }
 
-.div-not-empty{
-    height: 100%;
-    max-height: 100%;
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
+.styled-input-div {
+  width: 70%;
+  position: relative;
 }
 
-.div-grid{
-    height: 82%;
-    width: 100%;
-    max-width: 100%;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    display: grid;
-    padding-top: 2%;
-    padding-bottom: 2%;
-    grid-template-columns: repeat(2, 1fr);
-    justify-items: center; 
-    row-gap: 20px
+input.styled-input {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 5px 0;
+  background-color: transparent;
+  color: white;
+  width: 100%;
+}
+
+input.styled-input:focus {
+  color: #2ecc71;
+}
+
+input.styled-input:focus::placeholder {
+  color: #2ecc71;
+}
+
+input.styled-input:focus ~ .underline {
+  width: 100%;
+}
+
+input.styled-input::placeholder {
+  color: rgba(255, 255, 255, 0.65);
+  transition: color 0.3s ease;
+}
+
+.underline {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background-color: #2ecc71;
+  transition: width 0.4s ease;
+}
+
+
+.btn-add-flux {
+  width: 120px;
+  background-color: #1db954;
+  border-radius: 50px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 10px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-add-flux:hover {
+  background-color: #1aa34a;
+}
+
+.div-grid {
+  border-radius: 8px;
+  height: 69%;
+  width: 90%;
+  max-width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  justify-items: center;
+  row-gap: 20px;
+  margin: 1%;
+  padding: 2px 3% 3%;
 }
 
 .div-empty{
@@ -166,25 +235,6 @@ export default {
 }
 
 
-.div-not-empty-header input[type="text"] {
-  width: 50%;
-  margin: 8px 0;
-  box-sizing: border-box;
-  border: none; 
-  border-bottom: 3px solid #000000; 
-  -webkit-transition: 0.5s;
-  transition: 0.5s;
-  outline: none;
-  background-color: transparent;
-  color: black;
-}
 
-.div-not-empty-header input:disabled {
-    background-color: rgb(180, 180, 180);
-}
-
-.div-not-empty-header input:focus {
-    border-bottom: 3px solid #555;
-}
 </style>
 

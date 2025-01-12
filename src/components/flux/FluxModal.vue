@@ -21,7 +21,6 @@
             type="text"
             v-model="flux.name"
             placeholder="Name"
-            required
           />
   
           <div class="modal-form-btn">
@@ -29,7 +28,7 @@
               Cancel
             </button>
             <button class="btn-submit" @click="add()">Add</button>
-            <button class="btn-submit" @click="addEdit()">Add & edit</button>
+            <!--<button class="btn-submit" @click="addEdit()">Add & edit</button>-->
           </div>
         </form>
       </div>
@@ -94,7 +93,7 @@ export default {
 }
 
 .modal-content {
-    background: white;
+    background: #181818;
     padding: 2%;
     border-radius: 8px;
     width: 90%;
@@ -113,6 +112,7 @@ export default {
     font-weight: bold;
     display: flex;
     align-items: center;
+    color: #1aa34a;
 }
 
 .modal-title-logo {
@@ -131,16 +131,20 @@ export default {
   padding: 12px 20px;
   margin: 8px 0;
   box-sizing: border-box;
-  border: 3px solid #7e7d7d;
+  border: 3px solid #1aa34a;
   -webkit-transition: 0.5s;
   transition: 0.5s;
   outline: none;
-  background-color: white;
-  color: black;
+  background-color: transparent;
+  color: white;
 }
 
 .modal-slot input:disabled {
-    background-color: rgb(180, 180, 180);
+    background-color: #0b4d22;
+}
+
+.modal-slot input::placeholder {
+  color: #afaeae;
 }
 
 .modal-slot input:focus {
@@ -148,25 +152,59 @@ export default {
 }
 
 .modal-form-btn {
+  margin-top: 5%;
     text-align: end;
 }
 
 .btn-cancel {
-    background-color: red;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  background-color: #cc0606;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.btn-cancel:hover {
+  background-color: #940505;
 }
 
 .btn-submit {
-    background-color: green;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    margin-left: 10px;
-    cursor: pointer;
+  background-color: #1db954;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 10px;
+  cursor: pointer;
 }
+
+.btn-submit:hover {
+  background-color: #1aa34a;
+}
+
+/*button {*/
+/*  width: 120px;*/
+/*  background-color: #1db954;*/
+/*  border-radius: 50px;*/
+/*  border: none;*/
+/*  color: white;*/
+/*  font-weight: bold;*/
+/*  font-size: 14px;*/
+/*  padding: 10px 20px;*/
+/*  cursor: pointer;*/
+/*  transition: background-color 0.3s ease;*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  justify-content: center;*/
+/*  width: 40%;*/
+/*  height: 80%;*/
+/*}*/
+
+
 </style>

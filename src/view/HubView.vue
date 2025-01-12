@@ -1,44 +1,57 @@
 <template>
-  <div class="hub-view">
-    <section>
-      <div class="div-title">
-        <h3>My Flux</h3>
-        <span class="material-symbols-outlined material-vertical-middle">
-          arrow_forward
-        </span>
-      </div>
-      <div class="workergrid">
-          <FluxCardContainer />
-      </div>
-    </section>
+  <div class="div-hub-view">
+    <HubSideBar class="hub-side-bar" />
+    <div class="hub-content">
+      <FluxCardContainer v-if="selectedHubNode === 'flux'"/>
 
-    <section>
-      <div class="div-title">
-        <h3>My workers</h3>
-        <span class="material-symbols-outlined material-vertical-middle">
+    </div>
+
+    <!--<div class="hub-view">
+      <section>
+        <div class="div-title">
+          <h3>My Flux</h3>
+          <span class="material-symbols-outlined material-vertical-middle">
           arrow_forward
         </span>
-      </div>
-      <div class="workergrid">
+        </div>
+        <div class="workergrid">
+          <FluxCardContainer />
+        </div>
+      </section>
+
+      <section>
+        <div class="div-title">
+          <h3>My workers</h3>
+          <span class="material-symbols-outlined material-vertical-middle">
+          arrow_forward
+        </span>
+        </div>
+        <div class="workergrid">
           <WorkerGrid :isFluxEdition="false"/>
         </div>
-    </section>
+      </section>
+    </div>-->
   </div>
+
 </template>
 
 <script>
 import { useWorkersStore } from "@/store/workerStore";
 import { useFluxStore } from "@/store/fluxStore";
-import { computed } from "vue";
+import {computed, ref} from "vue";
 import WorkerGrid from '../components/worker/WorkerGrid.vue';
 import FluxCardContainer from "../components/flux/FluxCardContainer.vue";
-
+import HubSideBar from "@/components/HubSideBar.vue";
+import {useUserStore} from "@/store/userStore.js";
 export default {
   components: {
+    HubSideBar,
     WorkerGrid,
     FluxCardContainer
   },
   setup(props, { emit }) {
+    const userStore = useUserStore();
+    const selectedHubNode = computed(() => userStore.getSelectedHubNode());
     const fluxStore = useFluxStore();
     const fluxList = computed(() => fluxStore.getAllFlux());
     fluxStore.selectFlux(null)
@@ -59,17 +72,34 @@ export default {
     }
 
     return {
+      selectedHubNode,
       fluxList,
       workerList,
       createFlux,
       stopFlux,
-      stopWorker
+      stopWorker,
     }
   }
 }
 </script>
 
 <style scoped>
+.div-hub-view{
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.hub-side-bar{
+  width: 15%;
+}
+
+.hub-content{
+  width: 85%;
+}
+
+
+
 .hub-view {
   display: flex;
   justify-content: space-between;

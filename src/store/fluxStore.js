@@ -14,7 +14,17 @@ export const useFluxStore = defineStore('fluxStore', {
     },
     getAllFlux: (state) => () => state.flux,
     getSelectedFlux: (state) => () => state.selectedFlux,
-    getAllFluxFiltered : (state) => (search) => state.flux.filter(flux => flux.name.includes(search))
+    getAllFluxFiltered : (state) => (search) => {
+      if(search){
+        return state.flux.filter(flux => {
+          if(flux.name){
+            return flux.name.includes(search);
+          }
+          return false;
+        })
+      }
+      return state.flux;
+    }
   },
 
   actions: {

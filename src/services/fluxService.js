@@ -85,8 +85,12 @@ export default {
      * @param {Object} flux - The flux to add
      */
     async addFluxAndRefreshStore(flux){
-        await this.addFlux(flux);
-        await this.fetchAllFluxByGroup();
+        let savedFlux = await this.addFlux(flux);
+        if (savedFlux){
+            await this.fetchAllFluxByGroup();
+            return savedFlux;
+        }
+        return null;
     },
 
     /**
