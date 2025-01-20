@@ -1,5 +1,9 @@
 <template>
   <div v-if="flux !== undefined" class="flux-editor-view">
+    <div>
+      
+      <div>Go back to hub</div>
+    </div>
     <div class="editor-layout">
       <div class="editor-layout-left">
         <div class="preview-grid">
@@ -240,20 +244,9 @@ input:focus {
 }
 
 .flux-editor-view {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  background-color: #d2d2d2;
-  border-radius: 6px;
-  border: 1px solid #2a802e;
-  box-shadow: 0 0 8px 2px #49b26a;
-  margin-top: 2%;
-  height: 85vh;
-  min-height: 20%;
-  max-height: 50%;
-  overflow-y: hidden;
-  color: black;
+  width: 96%;
+  height: 96%;
+  padding: 2%
 }
 
 .editor-layout {
